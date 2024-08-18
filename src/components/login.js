@@ -8,8 +8,14 @@ import Checkbox from '@mui/material/Checkbox';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 
 import './login.css';
+import { useNavigate } from 'react-router-dom/dist';
 
 const Login = () => {
+    const navigate = useNavigate();
+
+    const handleLogin = () => {
+        navigate('/dashboard');
+    }
     return (
         <Grid>
             <Grid align='center'>
@@ -30,7 +36,7 @@ const Login = () => {
                 <TextField id="standard-basic" label="Password" variant="standard" placeholder='Enter Your Password' type='password' fullWidth required />
                 <FormControlLabel control={<Checkbox defaultChecked />} label="Remember Me" />
 
-                <Button className="btnStyle" type='submit' color='primary' variant="contained" fullWidth>Login</Button>
+                <Button className="btnStyle" type='submit' color='primary' variant="contained" fullWidth onClick={handleLogin}>Login</Button>
                 <Typography>
                     <Link href="#">
                         Forgot Password?
