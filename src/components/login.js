@@ -26,7 +26,7 @@ const Login = () => {
                     </Avatar>
                     <h2>Login</h2>
                 </Grid>
-                <TextField id="standard-basic" label="Username" variant="standard" placeholder='Enter Your Username' fullWidth required />
+                <TextField id="standard-basic" label="Email" variant="standard" placeholder='Enter Your Email' fullWidth required />
                 <TextField id="standard-basic" label="Password" variant="standard" placeholder='Enter Your Password' type='password' fullWidth required />
                 <FormControlLabel control={<Checkbox defaultChecked />} label="Remember Me" />
 
