@@ -5,6 +5,8 @@ import {
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { motion } from 'framer-motion';
+import { DatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 
 const candidates = [
     {
@@ -48,6 +50,7 @@ export const ScheduleSection = () => {
     const theme = useTheme();
     const [open, setOpen] = useState(false);
     const [selectedCandidate, setSelectedCandidate] = useState(null);
+    const [interviewDate, setInterviewDate] = useState(dayjs());
 
     const handleCardClick = (candidate) => {
         setSelectedCandidate(candidate);
@@ -143,14 +146,12 @@ export const ScheduleSection = () => {
                                 readOnly: true,
                             }}
                         />
-                        <TextField
-                            fullWidth
-                            margin="normal"
+                        <DatePicker
                             label="Interview Date"
-                            value={new Date(selectedCandidate?.applicationDate).toLocaleString()}
-                            InputProps={{
-                                readOnly: true,
-                            }}
+                            value={interviewDate}
+                            onChange={(newValue) => setInterviewDate(newValue)}
+                            fullWidth
+                            sx={{ mt: 2 }}
                         />
                         <TextField
                             fullWidth
