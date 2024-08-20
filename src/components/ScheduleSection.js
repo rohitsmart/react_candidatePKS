@@ -7,6 +7,7 @@ import { useTheme } from '@mui/material/styles';
 import { motion } from 'framer-motion';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
+import WarningDialog from './WarningDialog';
 
 const candidates = [
     {
@@ -58,6 +59,7 @@ const getStatusColor = (status) => {
 export const ScheduleSection = () => {
     const theme = useTheme();
     const [open, setOpen] = useState(false);
+    const [warningOpen, setWarningOpen] = useState(false);
     const [selectedCandidate, setSelectedCandidate] = useState(null);
     const [interviewDate, setInterviewDate] = useState(dayjs());
     const [employerSearch, setEmployerSearch] = useState('');
@@ -65,7 +67,22 @@ export const ScheduleSection = () => {
     const [statusFilter, setStatusFilter] = useState('');
 
     const handleCardClick = (candidate) => {
-        setSelectedCandidate(candidate);
+        if (candidate.schedule) {
+            setSelectedCandidate(candidate);
+            setWarningOpen(true);
+        } else {
+            setSelectedCandidate(candidate);
+            setOpen(true);
+        }
+    };
+
+    const handleWarningClose = () => {
+        setWarningOpen(false);
+        setSelectedCandidate(null);
+    };
+
+    const handleWarningConfirm = () => {
+        setWarningOpen(false);
         setOpen(true);
     };
 
@@ -198,6 +215,11 @@ export const ScheduleSection = () => {
                     </Grid>
                 ))}
             </Grid>
+            <WarningDialog
+                open={warningOpen}
+                onClose={handleWarningClose}
+                onConfirm={handleWarningConfirm}
+            />
 
             <Modal
                 open={open}
