@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Typography, Paper, Grid, Card, CardContent } from '@mui/material';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { useEffect } from 'react';
 
 const todayInterviews = [
     { name: 'Scheduled', value: 10 },
@@ -33,6 +34,9 @@ const ongoingInterviews = [
 ];
 
 const HomeSection = () => {
+    useEffect(() => {
+        document.title = 'Dashboard';
+    }, []);
     return (
         <Box sx={{ flexGrow: 1, padding: 3 }}>
             <Typography variant="h4" gutterBottom>

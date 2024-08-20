@@ -14,10 +14,14 @@ import HomeSection from '../components/HomeSection';
 import CandidateSection from '../components/CandidateSection';
 import { ScheduleSection } from '../components/ScheduleSection';
 import { InterviewF2F } from '../components/InterviewF2F';
+import { useEffect } from 'react';
 
 const drawerWidth = 240;
 
 const Dashboard = (props) => {
+    useEffect(() => {
+        document.title = 'Dashboard';
+    }, []);
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [selectedSection, setSelectedSection] = useState('Home');
     const [scheduledCandidateId, setScheduledCandidateId] = useState(null);

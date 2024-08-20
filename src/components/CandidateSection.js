@@ -8,6 +8,7 @@ import {
 import FilterListIcon from '@mui/icons-material/FilterList';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useEffect } from 'react';
 const employees = [
     { id: '1', name: 'John Doe' },
     { id: '2', name: 'Jane Smith' },
@@ -18,6 +19,9 @@ const candidateTypes = ['Front-end', 'Back-end', 'Mobile', 'Full Stack'];
 const statuses = ['APPLIED', 'INTERVIEWED', 'SELECTED', 'REJECTED', 'QUALIFYFORNEXTROUND'];
 
 const CandidateSection = () => {
+    useEffect(() => {
+        document.title = 'Candidate';
+    }, []);
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',

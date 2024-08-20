@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import WarningDialog from './WarningDialog';
+import { useEffect } from 'react';
 
 const candidates = [
     {
@@ -57,6 +58,9 @@ const getStatusColor = (status) => {
 };
 
 export const ScheduleSection = ({ onScheduleConfirmed }) => {
+    useEffect(() => {
+        document.title = 'Schedule';
+    }, []);
     const theme = useTheme();
     const [open, setOpen] = useState(false);
     const [warningOpen, setWarningOpen] = useState(false);

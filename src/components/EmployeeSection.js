@@ -5,6 +5,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddEmployeeSection from './AddEmployeeSection';
+import { useEffect } from 'react';
 const employees = [
     { id: 1, name: 'John Doe', email: 'john@example.com', designation: 'Software Engineer', joiningDate: '2023-01-15' },
     { id: 2, name: 'Jane Smith', email: 'jane@example.com', designation: 'Product Manager', joiningDate: '2022-09-01' },
@@ -15,6 +16,9 @@ const employees = [
 const EmployeeSection = () => {
     const [openAdd, setOpenAdd] = useState(false);
     const [openView, setOpenView] = useState(true);
+    useEffect(() => {
+        document.title = 'Employee';
+    }, []);
 
     return (
         <Box sx={{ flexGrow: 1 }}>
