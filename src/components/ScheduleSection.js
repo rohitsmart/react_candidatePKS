@@ -145,19 +145,21 @@ export const ScheduleSection = () => {
                             InputProps={{
                                 readOnly: true,
                             }}
+                            sx={{ mt: 2 }}
                         />
                         <DatePicker
                             label="Interview Date"
                             value={interviewDate}
                             onChange={(newValue) => setInterviewDate(newValue)}
                             fullWidth
-                            sx={{ mt: 2 }}
+                            sx={{ mt: 2 ,width:'-webkit-fill-available'}}
                         />
                         <TextField
                             fullWidth
                             margin="normal"
                             label="Employer"
                             placeholder="Enter employer's name"
+                            sx={{ mt: 2 }}
                         />
                         <Button
                             variant="contained"
