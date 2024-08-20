@@ -1,35 +1,101 @@
-.paperStyle {
+.Grid {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f4f8;
     padding: 20px;
-    height: 70vh;
-    width: 280px;
-    margin: 19px auto;
-    background-color: #E6F4F1;
-    border-radius: 12px;
-    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
+}
+
+.paperStyle {
+    padding: 40px 30px;
+    height: auto;
+    width: 350px;
+    margin: 20px auto;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 .avatarStyle {
-    background-color: #D9D9D9;
+    background-color: #FF6F61;
+    margin-bottom: 25px;
+}
+
+.logoStyle {
+    background-color: #FF6F61;
+    margin-bottom: 30px;
+    width: 80px;
+    height: 80px;
+}
+
+.iconStyle, .iconLockStyle {
+    color: #ffffff;
+    width: 60px;
+    height: 60px;
+}
+
+h2 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333333;
+    margin-bottom: 20px;
 }
 
 .btnStyle {
     background-color: #1B6DA1;
-    margin: 12px 0;
+    margin: 30px 0 20px 0 !important;
+    padding: 12px 0;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+    border-radius: 8px;
 }
 
-.logoStyle {
-    background-color: #D9D9D9;
-    margin: 10px 0;
-    width: 70px;
-    height: 70px;
+.btnStyle:hover {
+    background-color: #145589;
 }
 
-.iconStyle {
-    color: #002A57;
-    width: 56px;
-    height: 56px;
+.MuiTextField-root {
+    margin-bottom: 35px; 
 }
 
-.iconLockStyle {
-    color: #002A57;
+.MuiInputBase-input::placeholder {
+    font-size: 14px; 
+    color: #888888;
+}
+
+.MuiInputBase-root {
+    font-size: 16px;
+}
+
+.MuiInputBase-root:focus-within {
+    background-color: transparent; 
+}
+
+.Link {
+    color: #1B6DA1;
+    font-size: 14px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.Link:hover {
+    color: #145589;
+}
+
+.loginFooter{
+    display: flex;
+    justify-content: space-between;
+}
+
+.forgetpasswordLink{
+    margin: 8px !important;
+}
+
+.LoginEmailInput{
+margin-bottom: 10px !important;
+  
 }
