@@ -13,12 +13,15 @@ import EmployeeSection from '../components/EmployeeSection';
 import HomeSection from '../components/HomeSection';
 import CandidateSection from '../components/CandidateSection';
 import { ScheduleSection } from '../components/ScheduleSection';
+import { InterviewF2F } from '../components/InterviewF2F';
 
 const drawerWidth = 240;
 
 const Dashboard = (props) => {
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [selectedSection, setSelectedSection] = useState('Home');
+    const [scheduledCandidateId, setScheduledCandidateId] = useState(null);
+
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -28,6 +31,10 @@ const Dashboard = (props) => {
 
     const handleSectionChange = (section) => {
         setSelectedSection(section);
+    };
+    const handleScheduleConfirmed = (candidateId) => {
+        setScheduledCandidateId(candidateId);
+        handleSectionChange('Interview');
     };
 
     const drawer = (
@@ -121,7 +128,13 @@ const Dashboard = (props) => {
                 {selectedSection === 'Home' && <HomeSection />}
                 {selectedSection === 'Employee' && <EmployeeSection />}
                 {selectedSection === 'Candidate' && <CandidateSection />}
-                {selectedSection === 'Schedule' && <ScheduleSection />}
+                {/* {selectedSection === 'Schedule' && <ScheduleSection />} */}
+                {selectedSection === 'Schedule' && (
+                    <ScheduleSection onScheduleConfirmed={handleScheduleConfirmed} />
+                )}
+                {selectedSection === 'Interview' && scheduledCandidateId && (
+                    <InterviewF2F candidateId={scheduledCandidateId} />
+                )}
 
             </Box>
         </Box>
