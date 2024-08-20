@@ -30,19 +30,19 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
     try {
       const response = await axios.post(ENDPOINTS.LOGIN, { email, password });
-
+  
       if (response.data.token) {
         dispatch(setToken(response.data.token));
-        console.log("Token set in Redux:", response.data.token);
         navigate("/dashboard");
       }
     } catch (error) {
       console.error('Login failed:', error);
     }
   };
+  
 
   return (
     <Grid>
