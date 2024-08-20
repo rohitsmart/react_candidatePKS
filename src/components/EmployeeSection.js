@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Box, Typography, Grid, Paper, IconButton, Collapse, Button } from '@mui/material';
+import { Box, Typography, Grid, Paper, IconButton, Collapse, Button, Stack } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddEmployeeSection from './AddEmployeeSection';
-
 const employees = [
     { id: 1, name: 'John Doe', email: 'john@example.com', designation: 'Software Engineer', joiningDate: '2023-01-15' },
     { id: 2, name: 'Jane Smith', email: 'jane@example.com', designation: 'Product Manager', joiningDate: '2022-09-01' },
@@ -17,17 +18,42 @@ const EmployeeSection = () => {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <Box sx={{ mb: 2 }}>
-                <Button onClick={() => setOpenAdd(!openAdd)} variant="contained" color="primary" sx={{ mb: 2 }}>
-                    {openAdd ? 'Collapse Add Employee' : 'Expand Add Employee'}
+            <Stack spacing={2}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    onClick={() => setOpenAdd(!openAdd)}
+                    sx={{ position: 'relative', display: 'flex', justifyContent: 'space-between' }}
+                >
+                    <Typography variant="button">Add Employee</Typography>
+                    <IconButton
+                        size="small"
+                        sx={{ position: 'absolute', top: 8, right: 8 }}
+                        onClick={() => setOpenAdd(!openAdd)}
+                    >
+                        {openAdd ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                    </IconButton>
                 </Button>
                 <Collapse in={openAdd}>
-                    <AddEmployeeSection />
+                    <AddEmployeeSection/>
                 </Collapse>
-            </Box>
-            <Box sx={{ mb: 2 }}>
-                <Button onClick={() => setOpenView(!openView)} variant="contained" color="secondary" sx={{ mb: 2 }}>
-                    {openView ? 'Collapse Employee List' : 'Expand Employee List'}
+
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    fullWidth
+                    onClick={() => setOpenView(!openView)}
+                    sx={{ position: 'relative', display: 'flex', justifyContent: 'space-between' }}
+                >
+                    <Typography variant="button">View Employee List</Typography>
+                    <IconButton
+                        size="small"
+                        sx={{ position: 'absolute', top: 8, right: 8 }}
+                        onClick={() => setOpenView(!openView)}
+                    >
+                        {openView ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                    </IconButton>
                 </Button>
                 <Collapse in={openView}>
                     <Box sx={{ overflowX: 'auto' }}>
@@ -92,7 +118,7 @@ const EmployeeSection = () => {
                         </Grid>
                     </Box>
                 </Collapse>
-            </Box>
+            </Stack>
         </Box>
     );
 };

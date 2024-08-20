@@ -28,7 +28,6 @@ const AddEmployeeSection = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Implement your API call here
         console.log(formData);
     };
 
@@ -120,7 +119,7 @@ const AddEmployeeSection = () => {
                 </Grid>
                 <Box sx={{ mt: 2 }}>
                     <Button type="submit" variant="contained" color="primary">
-                        Add
+                        Save
                     </Button>
                 </Box>
             </form>
