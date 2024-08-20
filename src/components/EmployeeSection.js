@@ -14,7 +14,7 @@ const employees = [
 const EmployeeSection = () => {
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AddEmployeeSection/>
+            <AddEmployeeSection />
             <Box sx={{ overflowX: 'auto' }}>
                 <Grid container spacing={2} sx={{ minWidth: 700 }}>
                     <Grid item xs={12}>
