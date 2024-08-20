@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Typography, Button, TextField, MenuItem, Select, InputLabel, FormControl, Grid, Box } from '@mui/material';
+import axios from 'axios';
+import ENDPOINTS from '../assests/Endpoints';
 
 const designations = [
     { value: 'BACKEND_DEV', label: 'Back-end Developer' },
@@ -9,7 +11,7 @@ const designations = [
 
 const roles = [
     { value: 'ADMIN', label: 'Admin' },
-    { value: 'EMPLOYEE', label: 'Employee' },
+    { value: 'Employee', label: 'Employee' },
 ];
 
 const AddEmployeeSection = () => {
@@ -26,9 +28,35 @@ const AddEmployeeSection = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
+
+        const requestData = {
+            userRequest: {
+                email: formData.email,
+                userRole: formData.userRole,
+            },
+            empId: formData.empId,
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            designation: formData.designation,
+        };
+
+        try {
+            const response = await axios.post(ENDPOINTS.ADD_EMPLOYEE, requestData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Include any auth headers if needed, e.g. Authorization: `Bearer ${token}`
+                },
+            });
+
+            console.log('Employee saved successfully:', response.data);
+            // Handle success (e.g., show a success message or redirect)
+        } catch (error) {
+            console.error('Error saving employee:', error);
+            // Handle error (e.g., show an error message)
+        }
     };
 
     return (
