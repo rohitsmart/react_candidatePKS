@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
     Card, CardContent, Typography, Grid, CardActionArea, Box, Chip,
-    Modal, Backdrop, Fade, TextField, Button, List, ListItem, ListItemText
+    Modal, Backdrop, Fade, TextField, Button, List, ListItem, ListItemText, Select, MenuItem
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { motion } from 'framer-motion';
@@ -17,6 +17,7 @@ const candidates = [
         candidateType: 'Front-end',
         status: 'APPLIED',
         applicationDate: '2024-08-19T10:30:00',
+        schedule: true,
     },
     {
         id: 2,
@@ -26,7 +27,9 @@ const candidates = [
         candidateType: 'Fullstack',
         status: 'INTERVIEWED',
         applicationDate: '2024-08-19T11:00:00',
+        schedule: false,
     },
+    // Add more candidates as needed
 ];
 
 const employers = [
@@ -59,6 +62,7 @@ export const ScheduleSection = () => {
     const [interviewDate, setInterviewDate] = useState(dayjs());
     const [employerSearch, setEmployerSearch] = useState('');
     const [filteredEmployers, setFilteredEmployers] = useState([]);
+    const [statusFilter, setStatusFilter] = useState(''); // State for filtering status
 
     const handleCardClick = (candidate) => {
         setSelectedCandidate(candidate);
@@ -91,14 +95,46 @@ export const ScheduleSection = () => {
         setFilteredEmployers([]);
     };
 
+    const handleStatusChange = (event) => {
+        setStatusFilter(event.target.value);
+    };
+
+    const handleClearFilter = () => {
+        setStatusFilter('');
+    };
+
+    const filteredCandidates = statusFilter
+        ? candidates.filter((candidate) => candidate.status === statusFilter)
+        : candidates;
+
     return (
         <Box sx={{ flexGrow: 1, p: 3 }}>
             <Typography variant="h4" gutterBottom>
                 Scheduler
             </Typography>
 
+            {/* Filter Section */}
+            <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Select
+                    value={statusFilter}
+                    onChange={handleStatusChange}
+                    displayEmpty
+                    sx={{ width: 200 }}
+                >
+                    <MenuItem value="">All Statuses</MenuItem>
+                    <MenuItem value="APPLIED">Applied</MenuItem>
+                    <MenuItem value="INTERVIEWED">Interviewed</MenuItem>
+                    <MenuItem value="SELECTED">Selected</MenuItem>
+                    <MenuItem value="REJECTED">Rejected</MenuItem>
+                    <MenuItem value="QUALIFYFORNEXTROUND">Qualify for Next Round</MenuItem>
+                </Select>
+                <Button onClick={handleClearFilter} variant="outlined">
+                    Clear All
+                </Button>
+            </Box>
+
             <Grid container spacing={3}>
-                {candidates.map((candidate) => (
+                {filteredCandidates.map((candidate) => (
                     <Grid item xs={12} sm={6} md={4} key={candidate.candidateId}>
                         <motion.div
                             whileHover={{ scale: 1.05 }}
@@ -132,6 +168,31 @@ export const ScheduleSection = () => {
                                                 marginTop: theme.spacing(2),
                                             }}
                                         />
+                                        {candidate.schedule ? (
+                                            <div
+                                                style={{
+                                                    marginTop: theme.spacing(2),
+                                                    color: 'blue',
+                                                    fontWeight: 'bold',
+                                                    fontSize: '0.875rem',
+                                                }}
+                                            >
+                                                Scheduled
+                                            </div>
+                                        ) : (
+                                            <motion.div
+                                                animate={{ opacity: [0, 1, 0] }}
+                                                transition={{ duration: 2, repeat: Infinity }}
+                                                style={{
+                                                    marginTop: theme.spacing(2),
+                                                    color: 'red',
+                                                    fontWeight: 'bold',
+                                                    fontSize: '0.875rem',
+                                                }}
+                                            >
+                                                Not Scheduled
+                                            </motion.div>
+                                        )}
                                     </CardContent>
                                 </Card>
                             </CardActionArea>
@@ -181,7 +242,7 @@ export const ScheduleSection = () => {
                             value={interviewDate}
                             onChange={(newValue) => setInterviewDate(newValue)}
                             fullWidth
-                            sx={{ mt: 2 ,width:'-webkit-fill-available'}}
+                            sx={{ mt: 2, width: '-webkit-fill-available' }}
                         />
                         <TextField
                             fullWidth
