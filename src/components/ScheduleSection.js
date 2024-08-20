@@ -62,7 +62,7 @@ export const ScheduleSection = () => {
     const [interviewDate, setInterviewDate] = useState(dayjs());
     const [employerSearch, setEmployerSearch] = useState('');
     const [filteredEmployers, setFilteredEmployers] = useState([]);
-    const [statusFilter, setStatusFilter] = useState(''); // State for filtering status
+    const [statusFilter, setStatusFilter] = useState('');
 
     const handleCardClick = (candidate) => {
         setSelectedCandidate(candidate);
@@ -112,8 +112,6 @@ export const ScheduleSection = () => {
             <Typography variant="h4" gutterBottom>
                 Scheduler
             </Typography>
-
-            {/* Filter Section */}
             <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Select
                     value={statusFilter}
