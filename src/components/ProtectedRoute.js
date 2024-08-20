@@ -7,5 +7,4 @@ const ProtectedRoute = ({ element: Component, ...rest }) => {
 
   return token ? Component : <Navigate to="/" />;
 };
-
 export default ProtectedRoute;

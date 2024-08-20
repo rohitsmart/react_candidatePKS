@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Typography, Grid, Paper, IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { AddEmployeeSection } from './AddEmployeeSection';
 
 const employees = [
     { id: 1, name: 'John Doe', email: 'john@example.com', designation: 'Software Engineer', joiningDate: '2023-01-15' },
@@ -13,9 +14,7 @@ const employees = [
 const EmployeeSection = () => {
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <Typography variant="h4" gutterBottom>
-                Employee Section
-            </Typography>
+            <AddEmployeeSection/>
             <Box sx={{ overflowX: 'auto' }}>
                 <Grid container spacing={2} sx={{ minWidth: 700 }}>
                     <Grid item xs={12}>
