@@ -47,15 +47,17 @@ const AddEmployeeSection = () => {
                             fullWidth
                             margin="normal"
                             required
+                            variant="outlined"
                         />
                     </Grid>
                     <Grid item xs={12} md={6}>
-                        <FormControl fullWidth margin="normal">
+                        <FormControl fullWidth variant="outlined" margin="normal">
                             <InputLabel>User Role</InputLabel>
                             <Select
                                 name="userRole"
                                 value={formData.userRole}
                                 onChange={handleChange}
+                                label="User Role"
                                 required
                             >
                                 {roles.map((role) => (
@@ -75,6 +77,7 @@ const AddEmployeeSection = () => {
                             fullWidth
                             margin="normal"
                             required
+                            variant="outlined"
                         />
                     </Grid>
                     <Grid item xs={12} md={6}>
@@ -86,6 +89,7 @@ const AddEmployeeSection = () => {
                             fullWidth
                             margin="normal"
                             required
+                            variant="outlined"
                         />
                     </Grid>
                     <Grid item xs={12} md={6}>
@@ -97,15 +101,17 @@ const AddEmployeeSection = () => {
                             fullWidth
                             margin="normal"
                             required
+                            variant="outlined"
                         />
                     </Grid>
                     <Grid item xs={12} md={6}>
-                        <FormControl fullWidth margin="normal">
+                        <FormControl fullWidth variant="outlined" margin="normal">
                             <InputLabel>Designation</InputLabel>
                             <Select
                                 name="designation"
                                 value={formData.designation}
                                 onChange={handleChange}
+                                label="Designation"
                                 required
                             >
                                 {designations.map((designation) => (
