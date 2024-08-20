@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
     Card, CardContent, Typography, Grid, CardActionArea, Box, Chip,
-    Modal, Backdrop, Fade, TextField, Button
+    Modal, Backdrop, Fade, TextField, Button, List, ListItem, ListItemText
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { motion } from 'framer-motion';
@@ -29,6 +29,12 @@ const candidates = [
     },
 ];
 
+const employers = [
+    { id: 'E001', name: 'Company A' },
+    { id: 'E002', name: 'Company B' },
+    { id: 'E003', name: 'Company C' },
+];
+
 const getStatusColor = (status) => {
     switch (status) {
         case 'APPLIED':
@@ -51,6 +57,8 @@ export const ScheduleSection = () => {
     const [open, setOpen] = useState(false);
     const [selectedCandidate, setSelectedCandidate] = useState(null);
     const [interviewDate, setInterviewDate] = useState(dayjs());
+    const [employerSearch, setEmployerSearch] = useState('');
+    const [filteredEmployers, setFilteredEmployers] = useState([]);
 
     const handleCardClick = (candidate) => {
         setSelectedCandidate(candidate);
@@ -60,6 +68,27 @@ export const ScheduleSection = () => {
     const handleClose = () => {
         setOpen(false);
         setSelectedCandidate(null);
+        setEmployerSearch('');
+        setFilteredEmployers([]);
+    };
+
+    const handleEmployerSearch = (event) => {
+        const searchTerm = event.target.value;
+        setEmployerSearch(searchTerm);
+
+        if (searchTerm.length > 0) {
+            const filtered = employers.filter((employer) =>
+                employer.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            setFilteredEmployers(filtered);
+        } else {
+            setFilteredEmployers([]);
+        }
+    };
+
+    const handleEmployerSelect = (employer) => {
+        setEmployerSearch(employer.name);
+        setFilteredEmployers([]);
     };
 
     return (
@@ -159,8 +188,31 @@ export const ScheduleSection = () => {
                             margin="normal"
                             label="Employer"
                             placeholder="Enter employer's name"
+                            value={employerSearch}
+                            onChange={handleEmployerSearch}
                             sx={{ mt: 2 }}
                         />
+                        {filteredEmployers.length > 0 && (
+                            <List
+                                sx={{
+                                    maxHeight: 150,
+                                    overflow: 'auto',
+                                    border: '1px solid #ccc',
+                                    borderRadius: 1,
+                                    mt: 1,
+                                }}
+                            >
+                                {filteredEmployers.map((employer) => (
+                                    <ListItem
+                                        button
+                                        key={employer.id}
+                                        onClick={() => handleEmployerSelect(employer)}
+                                    >
+                                        <ListItemText primary={`${employer.name} (${employer.id})`} />
+                                    </ListItem>
+                                ))}
+                            </List>
+                        )}
                         <Button
                             variant="contained"
                             color="primary"
