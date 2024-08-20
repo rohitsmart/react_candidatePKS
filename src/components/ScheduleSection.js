@@ -56,7 +56,7 @@ const getStatusColor = (status) => {
     }
 };
 
-export const ScheduleSection = () => {
+export const ScheduleSection = ({ onScheduleConfirmed }) => {
     const theme = useTheme();
     const [open, setOpen] = useState(false);
     const [warningOpen, setWarningOpen] = useState(false);
@@ -83,7 +83,10 @@ export const ScheduleSection = () => {
 
     const handleWarningConfirm = () => {
         setWarningOpen(false);
-        setOpen(true);
+        // setOpen(true);
+        if (selectedCandidate) {
+            onScheduleConfirmed(selectedCandidate.candidateId);
+        }
     };
 
     const handleClose = () => {
