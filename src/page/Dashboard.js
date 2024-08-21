@@ -108,7 +108,12 @@ const Dashboard = (props) => {
                                     '& .MuiListItemIcon-root': {
                                         color: theme.palette.primary.main,
                                     },
-                                }
+                                    borderLeft: `4px solid ${theme.palette.warning.main}`, // Yellow border on the left
+                                    backgroundColor: theme.palette.action.hover, // Slightly different background for selected
+                                },
+                                '&:hover': {
+                                    backgroundColor: theme.palette.action.hover,
+                                },
                             }}
                         >
                             <ListItemIcon>
