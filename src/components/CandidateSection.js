@@ -4,17 +4,14 @@ import {
     CircularProgress,
     Autocomplete
 } from '@mui/material';
-
 import { useEffect } from 'react';
 import { ViewCandidate } from './ViewCandidate';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import ENDPOINTS from '../assests/Endpoints';
-
 const candidateTypes = ['Front-end', 'Back-end', 'Mobile', 'Full Stack'];
 const statuses = ['APPLIED', 'INTERVIEWED', 'SELECTED', 'REJECTED', 'QUALIFYFORNEXTROUND'];
-
 const CandidateSection = () => {
     const [employees, setEmployees] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
@@ -46,7 +43,7 @@ const CandidateSection = () => {
         if (searchQuery) {
             fetchEmployees(searchQuery);
         } else {
-            setEmployees([]); // Clear employees if search query is empty
+            setEmployees([]);
         }
     }, [searchQuery]);
 
@@ -83,7 +80,7 @@ const CandidateSection = () => {
                 ...prevState,
                 referralEmployeeId: value.empId
             }));
-            setSearchQuery(value.fullName); // Set the search query to the selected employee's name
+            setSearchQuery(value.fullName);
         } else {
             setCandidate((prevState) => ({
                 ...prevState,
@@ -95,14 +92,11 @@ const CandidateSection = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const formattedDate = candidate.dob ? candidate.dob.format('YYYY-MM-DD') : '';
-
         const candidateData = {
             ...candidate,
             dob: formattedDate
         };
-
         console.log('Form submitted:', candidateData);
-
         setCandidate({
             firstName: '',
             lastName: '',
@@ -190,7 +184,6 @@ const CandidateSection = () => {
                             />
                         </Grid>
                     </Grid>
-
                     <Typography variant="h6" gutterBottom sx={{ marginTop: 3 }}>
                         Qualification Details
                     </Typography>
@@ -257,7 +250,6 @@ const CandidateSection = () => {
                             />
                         </Grid>
                     </Grid>
-
                     <Typography variant="h6" gutterBottom sx={{ marginTop: 3 }}>
                         Address Details
                     </Typography>
@@ -295,7 +287,6 @@ const CandidateSection = () => {
                             />
                         </Grid>
                     </Grid>
-
                     <Typography variant="h6" gutterBottom sx={{ marginTop: 3 }}>
                         Referral Details
                     </Typography>
@@ -351,41 +342,40 @@ const CandidateSection = () => {
                             />
                         </Grid>
                         <Grid item xs={12} md={6}>
-                <Autocomplete
-                    freeSolo
-                    options={employees}
-                    getOptionLabel={(option) => `${option.empId} - ${option.fullName}`}
-                    loading={loading}
-                    onInputChange={(event, newValue) => {
-                        setSearchQuery(newValue);
-                    }}
-                    onChange={handleEmployeeSelect}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label="Referral Employee"
-                            variant="outlined"
-                            helperText="Referred by"
-                            InputProps={{
-                                ...params.InputProps,
-                                endAdornment: (
-                                    <>
-                                        {loading ? <CircularProgress color="inherit" size={24} /> : null}
-                                        {params.InputProps.endAdornment}
-                                    </>
-                                )
-                            }}
-                        />
-                    )}
-                    renderOption={(props, option) => (
-                        <li {...props}>
-                            {`${option.empId} - ${option.fullName}`}
-                        </li>
-                    )}
-                />
-            </Grid>
+                            <Autocomplete
+                                freeSolo
+                                options={employees}
+                                getOptionLabel={(option) => `${option.empId} - ${option.fullName}`}
+                                loading={loading}
+                                onInputChange={(event, newValue) => {
+                                    setSearchQuery(newValue);
+                                }}
+                                onChange={handleEmployeeSelect}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        label="Referral Employee"
+                                        variant="outlined"
+                                        helperText="Referred by"
+                                        InputProps={{
+                                            ...params.InputProps,
+                                            endAdornment: (
+                                                <>
+                                                    {loading ? <CircularProgress color="inherit" size={24} /> : null}
+                                                    {params.InputProps.endAdornment}
+                                                </>
+                                            )
+                                        }}
+                                    />
+                                )}
+                                renderOption={(props, option) => (
+                                    <li {...props}>
+                                        {`${option.empId} - ${option.fullName}`}
+                                    </li>
+                                )}
+                            />
+                        </Grid>
                     </Grid>
-
                     <Button
                         type="submit"
                         variant="contained"
@@ -399,6 +389,5 @@ const CandidateSection = () => {
             <ViewCandidate />
         </Box>
     );
-};
-
+}
 export default CandidateSection;
