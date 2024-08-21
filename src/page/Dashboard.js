@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Box, CssBaseline, Drawer, AppBar, Toolbar, List, Typography, Divider, ListItem, ListItemIcon, ListItemText, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -15,10 +15,17 @@ import CandidateSection from '../components/CandidateSection';
 import { ScheduleSection } from '../components/ScheduleSection';
 import { InterviewF2F } from '../components/InterviewF2F';
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { clearToken } from '../redux/slices/authSlice';
+import { SnackbarContext } from '../App';
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
 const Dashboard = (props) => {
+    const dispatch = useDispatch();
+    const showSnackbar = useContext(SnackbarContext);
+    const navigate = useNavigate();
     useEffect(() => {
         document.title = 'Dashboard';
     }, []);
@@ -33,12 +40,23 @@ const Dashboard = (props) => {
         setMobileOpen(!mobileOpen);
     };
 
-    const handleSectionChange = (section) => {
-        setSelectedSection(section);
-    };
     const handleScheduleConfirmed = (candidateId) => {
         setScheduledCandidateId(candidateId);
         handleSectionChange('Interview');
+    };
+    const handleSectionChange = (section) => {
+        if (section === 'Logout') {
+            handleLogout();
+        } else {
+            setSelectedSection(section);
+        }
+    };
+    const handleLogout = () => {
+        dispatch(clearToken());
+        showSnackbar('You have been logged out successfully.', 'success');
+        setTimeout(() => {
+            navigate('/');
+        }, 1000);
     };
 
     const drawer = (
@@ -132,7 +150,6 @@ const Dashboard = (props) => {
                 {selectedSection === 'Home' && <HomeSection />}
                 {selectedSection === 'Employee' && <EmployeeSection />}
                 {selectedSection === 'Candidate' && <CandidateSection />}
-                {/* {selectedSection === 'Schedule' && <ScheduleSection />} */}
                 {selectedSection === 'Schedule' && (
                     <ScheduleSection onScheduleConfirmed={handleScheduleConfirmed} />
                 )}
