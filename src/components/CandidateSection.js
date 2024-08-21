@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
     Box, Typography, TextField, Button, Grid, MenuItem, Paper,
     CircularProgress,
@@ -10,9 +10,14 @@ import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import ENDPOINTS from '../assests/Endpoints';
+import { SnackbarContext } from '../App';
+import LoadingButton from './custom/LoadingButton';
 const candidateTypes = ['Front-end', 'Back-end', 'Mobile', 'Full Stack'];
 const statuses = ['APPLIED', 'INTERVIEWED', 'SELECTED', 'REJECTED', 'QUALIFYFORNEXTROUND'];
 const CandidateSection = () => {
+    const [isLoading, setIsLoading] = useState(false);
+    const showSnackbar = useContext(SnackbarContext);
+
     const [employees, setEmployees] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [loading, setLoading] = useState(false);
@@ -90,36 +95,27 @@ const CandidateSection = () => {
     };
 
     const handleSubmit = async (e) => {
+        setIsLoading(true);
         e.preventDefault();
-
-        // Format the date properly
         const dob = new Date(candidate.dob);
         if (isNaN(dob.getTime())) {
             console.error('Invalid date format');
+            showSnackbar('Invalid date format', 'error');
+            setIsLoading(false);
             return;
         }
-        const formattedDate = dob.toLocaleDateString('en-GB'); // Adjust as needed
-
-        // Prepare candidate data excluding fields not expected by the API
+        const formattedDate = dob.toLocaleDateString('en-GB');
         const candidateData = {
             ...candidate,
             dob: formattedDate,
-            // Make sure to exclude 'city' if it's not expected by your backend
-            // city: undefined, // Optional: explicitly remove fields not needed
         };
-
-        console.log('Submitting candidate data:', candidateData);
-
         try {
             const response = await axios.post(ENDPOINTS.SAVE_CANDIDATE, candidateData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
-
-            console.log('Success:', response.data);
-
-            // Reset the form fields
+            showSnackbar('Candidate saved successfully:', 'success');
             setCandidate({
                 firstName: '',
                 lastName: '',
@@ -139,11 +135,11 @@ const CandidateSection = () => {
                 state: ''
             });
         } catch (error) {
-            console.error('Error submitting candidate data:', error.response ? error.response.data : error.message);
+            showSnackbar('Error saving employee:', 'error');
+        } finally {
+            setIsLoading(false);
         }
     };
-
-
 
     return (
         <Box sx={{ flexGrow: 1, padding: 3 }}>
@@ -406,14 +402,9 @@ const CandidateSection = () => {
                             />
                         </Grid>
                     </Grid>
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        sx={{ marginTop: 3 }}
-                    >
-                        Submit
-                    </Button>
+                    <LoadingButton type="submit" isLoading={isLoading}>
+                        Save
+                    </LoadingButton>
                 </form>
             </Paper>
             <ViewCandidate />
