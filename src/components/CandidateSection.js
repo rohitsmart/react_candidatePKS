@@ -9,6 +9,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useEffect } from 'react';
+import { ViewCandidate } from './ViewCandidate';
 const employees = [
     { id: '1', name: 'John Doe' },
     { id: '2', name: 'Jane Smith' },
@@ -198,12 +199,33 @@ const CandidateSection = () => {
                                 variant="outlined"
                             />
                         </Grid>
+
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                fullWidth
+                                label="Bachelor Degree"
+                                name="bachelorDegree"
+                                value={formData.bachelorDegree}
+                                onChange={handleChange}
+                                variant="outlined"
+                            />
+                        </Grid>
                         <Grid item xs={12} md={6}>
                             <TextField
                                 fullWidth
                                 label="Bachelor Pass Out Year"
                                 name="bachelorPassOut"
                                 value={formData.bachelorPassOut}
+                                onChange={handleChange}
+                                variant="outlined"
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                fullWidth
+                                label="Master Degree"
+                                name="masterDegree"
+                                value={formData.masterDegree}
                                 onChange={handleChange}
                                 variant="outlined"
                             />
@@ -343,99 +365,7 @@ const CandidateSection = () => {
                     </Button>
                 </form>
             </Paper>
-
-            <Paper elevation={3} sx={{ padding: 3, marginTop: 4 }}>
-                <Grid container justifyContent="space-between" alignItems="center">
-                    <Typography variant="h6" gutterBottom>
-                        View Candidates
-                    </Typography>
-                    <Grid item>
-                        <TextField
-                            label="Filter by Date"
-                            name="date"
-                            type="date"
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            value={filters.date}
-                            onChange={handleFilterChange}
-                        />
-                        <FormControl variant="outlined" sx={{ marginLeft: 2 }}>
-                            <InputLabel>Status</InputLabel>
-                            <Select
-                                name="status"
-                                value={filters.status}
-                                onChange={handleFilterChange}
-                                label="Status"
-                            >
-                                <MenuItem value="">
-                                    <em>None</em>
-                                </MenuItem>
-                                {statuses.map(status => (
-                                    <MenuItem key={status} value={status}>{status}</MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                        <IconButton aria-label="filter" sx={{ marginLeft: 2 }}>
-                            <FilterListIcon />
-                        </IconButton>
-                    </Grid>
-                </Grid>
-
-                <TableContainer component={Paper} sx={{ marginTop: 3 }}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Candidate ID</TableCell>
-                                <TableCell>First Name</TableCell>
-                                <TableCell>Last Name</TableCell>
-                                <TableCell>Email</TableCell>
-                                <TableCell>Phone</TableCell>
-                                <TableCell>Status</TableCell>
-                                <TableCell>Candidate Type</TableCell>
-                                <TableCell>Referral Employee</TableCell>
-                                <TableCell>Actions</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {filteredCandidates
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((candidate, index) => (
-                                    <TableRow key={index}>
-                                        <TableCell>{candidate.candidateId}</TableCell>
-                                        <TableCell>{candidate.firstName}</TableCell>
-                                        <TableCell>{candidate.lastName}</TableCell>
-                                        <TableCell>{candidate.email}</TableCell>
-                                        <TableCell>{candidate.phone}</TableCell>
-                                        <TableCell>{candidate.status}</TableCell>
-                                        <TableCell>{candidate.candidateType}</TableCell>
-                                        <TableCell>
-                                            {employees.find(emp => emp.id === candidate.referralEmployeeId)?.name || 'N/A'}
-                                        </TableCell>
-                                        <TableCell> {/* New Action cell */}
-                                            <IconButton aria-label="edit" onClick={() => handleEdit(candidate)}>
-                                                <EditIcon />
-                                            </IconButton>
-                                            <IconButton aria-label="delete" onClick={() => handleDelete(candidate)}>
-                                                <DeleteIcon />
-                                            </IconButton>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-
-                <TablePagination
-                    component="div"
-                    count={filteredCandidates.length}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    rowsPerPage={rowsPerPage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                    rowsPerPageOptions={[10, 25, 50]}
-                />
-            </Paper>
+            <ViewCandidate/>
         </Box>
     );
 };
