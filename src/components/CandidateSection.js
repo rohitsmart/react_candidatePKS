@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
 import {
-    Box, Typography, TextField, Button, Grid, MenuItem, Paper
+    Box, Typography, TextField, Button, Grid, MenuItem, Paper,
+    CircularProgress,
+    Autocomplete
 } from '@mui/material';
 
 import { useEffect } from 'react';
 import { ViewCandidate } from './ViewCandidate';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
+import axios from 'axios';
+import ENDPOINTS from '../assests/Endpoints';
 
 const candidateTypes = ['Front-end', 'Back-end', 'Mobile', 'Full Stack'];
 const statuses = ['APPLIED', 'INTERVIEWED', 'SELECTED', 'REJECTED', 'QUALIFYFORNEXTROUND'];
 
 const CandidateSection = () => {
     const [employees, setEmployees] = useState([]);
-    useEffect(() => {
-        document.title = 'Candidate';
-    }, []);
-
+    const [searchQuery, setSearchQuery] = useState('');
+    const [loading, setLoading] = useState(false);
     const [candidate, setCandidate] = useState({
         firstName: '',
         lastName: '',
@@ -36,6 +38,30 @@ const CandidateSection = () => {
         state: ''
     });
 
+    useEffect(() => {
+        document.title = 'Candidate';
+    }, []);
+
+    useEffect(() => {
+        if (searchQuery) {
+            fetchEmployees(searchQuery);
+        } else {
+            setEmployees([]); // Clear employees if search query is empty
+        }
+    }, [searchQuery]);
+
+    const fetchEmployees = async (query) => {
+        setLoading(true);
+        try {
+            const response = await axios.get(`${ENDPOINTS.SEARCH_EMPLOYEES}?search=${query}`);
+            setEmployees(response.data.employeeData || []);
+        } catch (error) {
+            console.error("Error fetching employees:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const handleChange = (e) => {
         if (e && e.target) {
             const { name, value } = e.target;
@@ -47,6 +73,21 @@ const CandidateSection = () => {
             setCandidate((prevState) => ({
                 ...prevState,
                 dob: e,
+            }));
+        }
+    };
+
+    const handleEmployeeSelect = (event, value) => {
+        if (value) {
+            setCandidate((prevState) => ({
+                ...prevState,
+                referralEmployeeId: value.empId
+            }));
+            setSearchQuery(value.fullName); // Set the search query to the selected employee's name
+        } else {
+            setCandidate((prevState) => ({
+                ...prevState,
+                referralEmployeeId: 0
             }));
         }
     };
@@ -81,7 +122,6 @@ const CandidateSection = () => {
             state: ''
         });
     };
-   
     return (
         <Box sx={{ flexGrow: 1, padding: 3 }}>
             <Typography variant="h4" gutterBottom>
@@ -311,24 +351,39 @@ const CandidateSection = () => {
                             />
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <TextField
-                                fullWidth
-                                select
-                                label="Referral Employee"
-                                name="referralEmployeeId"
-                                value={candidate.referralEmployeeId}
-                                onChange={handleChange}
-                                variant="outlined"
-                                SelectProps={{
-                                    native: false,
-                                }}
-                                helperText="Referred by"
-                            >
-                                {employees.map(emp => (
-                                    <MenuItem key={emp.id} value={emp.id}>{emp.name}</MenuItem>
-                                ))}
-                            </TextField>
-                        </Grid>
+                <Autocomplete
+                    freeSolo
+                    options={employees}
+                    getOptionLabel={(option) => `${option.empId} - ${option.fullName}`}
+                    loading={loading}
+                    onInputChange={(event, newValue) => {
+                        setSearchQuery(newValue);
+                    }}
+                    onChange={handleEmployeeSelect}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            label="Referral Employee"
+                            variant="outlined"
+                            helperText="Referred by"
+                            InputProps={{
+                                ...params.InputProps,
+                                endAdornment: (
+                                    <>
+                                        {loading ? <CircularProgress color="inherit" size={24} /> : null}
+                                        {params.InputProps.endAdornment}
+                                    </>
+                                )
+                            }}
+                        />
+                    )}
+                    renderOption={(props, option) => (
+                        <li {...props}>
+                            {`${option.empId} - ${option.fullName}`}
+                        </li>
+                    )}
+                />
+            </Grid>
                     </Grid>
 
                     <Button
