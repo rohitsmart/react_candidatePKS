@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
 import {
-    Box, Typography, TextField, Button, Grid, MenuItem,
-    FormControl, InputLabel, Select, FormHelperText, Paper,
-    Table, TableBody, TableCell, TableHead, TableRow,
-    IconButton, TableContainer, TablePagination
-} from '@mui/material';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+    Box, Typography, TextField, Button, Grid, MenuItem, Paper} from '@mui/material';
+
 import { useEffect } from 'react';
 import { ViewCandidate } from './ViewCandidate';
 const employees = [
@@ -41,9 +35,7 @@ const CandidateSection = () => {
         city: '',
         state: ''
     });
-
     const [candidates, setCandidates] = useState([]);
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -51,7 +43,6 @@ const CandidateSection = () => {
             [name]: value
         });
     };
-
     const handleSubmit = (e) => {
         e.preventDefault();
         setCandidates([...candidates, { candidateId: candidates.length + 1, ...formData }]);
@@ -75,46 +66,6 @@ const CandidateSection = () => {
             state: ''
         });
     };
-
-    const [filters, setFilters] = useState({
-        date: '',
-        status: ''
-    });
-
-    const handleFilterChange = (e) => {
-        const { name, value } = e.target;
-        setFilters({
-            ...filters,
-            [name]: value
-        });
-    };
-
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(50);
-
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleEdit = (event) => {
-  
-    };
-
-    const handleDelete = (event) => {
-     
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
-
-    const filteredCandidates = candidates.filter(candidate => {
-        if (filters.date && candidate.date !== filters.date) return false;
-        if (filters.status && candidate.status !== filters.status) return false;
-        return true;
-    });
-
     return (
         <Box sx={{ flexGrow: 1, padding: 3 }}>
             <Typography variant="h4" gutterBottom>
