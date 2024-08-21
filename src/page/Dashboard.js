@@ -100,7 +100,7 @@ const Dashboard = (props) => {
                             button 
                             key={text} 
                             onClick={() => handleSectionChange(text)}
-                            selected={selectedSection === text} // Highlight the selected section
+                            selected={selectedSection === text}
                             sx={{
                                 '&.Mui-selected': {
                                     backgroundColor: theme.palette.action.selected,
@@ -108,8 +108,8 @@ const Dashboard = (props) => {
                                     '& .MuiListItemIcon-root': {
                                         color: theme.palette.primary.main,
                                     },
-                                    borderLeft: `4px solid ${theme.palette.warning.main}`, // Yellow border on the left
-                                    backgroundColor: theme.palette.action.hover, // Slightly different background for selected
+                                    borderLeft: `4px solid ${theme.palette.warning.main}`,
+                                    backgroundColor: theme.palette.action.hover,
                                 },
                                 '&:hover': {
                                     backgroundColor: theme.palette.action.hover,
