@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Typography, TextField, MenuItem, Select, InputLabel, FormControl, Grid, Box } from '@mui/material';
 import axios from 'axios';
 import ENDPOINTS from '../assests/Endpoints';
 import LoadingButton from './custom/LoadingButton';
+import { SnackbarContext } from '../App';
 
 const designations = [
     { value: 'BACKEND_DEV', label: 'Back-end Developer' },
@@ -17,6 +18,7 @@ const roles = [
 
 const AddEmployeeSection = () => {
     const [isLoading, setIsLoading] = useState(false);
+    const showSnackbar = useContext(SnackbarContext);
 
     const [formData, setFormData] = useState({
         email: '',
@@ -55,8 +57,12 @@ const AddEmployeeSection = () => {
             });
 
             console.log('Employee saved successfully:', response.data);
+            showSnackbar('Employee saved successfully:', 'success');
+
         } catch (error) {
             console.error('Error saving employee:', error);
+            showSnackbar('Error saving employee:', 'error');
+
         }
         finally {
             setIsLoading(false);
