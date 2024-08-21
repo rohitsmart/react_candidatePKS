@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Typography, Button, TextField, MenuItem, Select, InputLabel, FormControl, Grid, Box } from '@mui/material';
+import { Typography, TextField, MenuItem, Select, InputLabel, FormControl, Grid, Box } from '@mui/material';
 import axios from 'axios';
 import ENDPOINTS from '../assests/Endpoints';
+import LoadingButton from './custom/LoadingButton';
 
 const designations = [
     { value: 'BACKEND_DEV', label: 'Back-end Developer' },
@@ -15,6 +16,8 @@ const roles = [
 ];
 
 const AddEmployeeSection = () => {
+    const [isLoading, setIsLoading] = useState(false);
+
     const [formData, setFormData] = useState({
         email: '',
         userRole: 'ADMIN',
@@ -31,6 +34,7 @@ const AddEmployeeSection = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
 
         const requestData = {
             userRequest: {
@@ -47,15 +51,15 @@ const AddEmployeeSection = () => {
             const response = await axios.post(ENDPOINTS.ADD_EMPLOYEE, requestData, {
                 headers: {
                     'Content-Type': 'application/json',
-                    // Include any auth headers if needed, e.g. Authorization: `Bearer ${token}`
                 },
             });
 
             console.log('Employee saved successfully:', response.data);
-            // Handle success (e.g., show a success message or redirect)
         } catch (error) {
             console.error('Error saving employee:', error);
-            // Handle error (e.g., show an error message)
+        }
+        finally {
+            setIsLoading(false);
         }
     };
 
@@ -152,9 +156,9 @@ const AddEmployeeSection = () => {
                     </Grid>
                 </Grid>
                 <Box sx={{ mt: 2 }}>
-                    <Button type="submit" variant="contained" color="primary">
+                <LoadingButton type="submit" isLoading={isLoading}>
                         Save
-                    </Button>
+                    </LoadingButton>
                 </Box>
             </form>
         </Box>
