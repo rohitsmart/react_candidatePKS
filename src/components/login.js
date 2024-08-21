@@ -12,7 +12,8 @@ import { useDispatch } from 'react-redux';
 import './login.css';
 import ENDPOINTS from '../assests/Endpoints';
 import { setToken } from '../redux/slices/authSlice';
-import { SnackbarContext } from '../App';
+import { LoaderContext, SnackbarContext } from '../App';
+
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -20,7 +21,9 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const showSnackbar = useContext(SnackbarContext);
+  const { showLoader, hideLoader } = useContext(LoaderContext);
   const handleLogin = async (e) => {
+    showLoader();
     e.preventDefault();
     try {
       const response = await axios.post(ENDPOINTS.LOGIN, { email, password });
@@ -28,12 +31,15 @@ const Login = () => {
         dispatch(setToken(response.data.token));
         showSnackbar('Login successful! Redirecting to dashboard...', 'success');
         setTimeout(() => {
+          hideLoader()
           navigate('/dashboard');
         }, 1000);
       } else {
+        hideLoader()
         showSnackbar('Login failed. Invalid credentials.', 'error');
       }
     } catch (error) {
+      hideLoader()
       console.error('Login failed:', error);
       showSnackbar('Login failed. Please try again.', 'error');
     }
