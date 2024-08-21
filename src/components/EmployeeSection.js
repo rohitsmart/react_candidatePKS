@@ -16,23 +16,46 @@ const EmployeeSection = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        const fetchEmployees = async (page = 0) => {
-            setLoading(true);
-            try {
-                const response = await axios.get(`${ENDPOINTS.GET_EMPLOYEES}?page=${page}&size=50`);
-                setEmployees(response.data.content);
-                setTotalPages(response.data.totalPages);
-                setCurrentPage(response.data.number);
-            } catch (error) {
-                console.error('Error fetching employees:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
+    // useEffect(() => {
+    //     const fetchEmployees = async (page = 0) => {
+    //         setLoading(true);
+    //         try {
+    //             const response = await axios.get(`${ENDPOINTS.GET_EMPLOYEES}?page=${page}&size=50`);
+    //             setEmployees(response.data.content);
+    //             setTotalPages(response.data.totalPages);
+    //             setCurrentPage(response.data.number);
+    //         } catch (error) {
+    //             console.error('Error fetching employees:', error);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
 
+    //     fetchEmployees();
+    // }, [currentPage]);
+
+    const fetchEmployees = async (page = 0) => {
+        setLoading(true);
+        try {
+            const response = await axios.get(`${ENDPOINTS.GET_EMPLOYEES}?page=${page}&size=50`);
+            setEmployees(response.data.content);
+            setTotalPages(response.data.totalPages);
+            setCurrentPage(response.data.number);
+        } catch (error) {
+            console.error('Error fetching employees:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const refreshEmployees = () => {
+        fetchEmployees(currentPage);
+    };
+
+    useEffect(() => {
         fetchEmployees();
     }, [currentPage]);
+
 
     const handlePageChange = (event, page) => {
         setCurrentPage(page - 1);
@@ -58,7 +81,7 @@ const EmployeeSection = () => {
                     </IconButton>
                 </Button>
                 <Collapse in={openAdd}>
-                    <AddEmployeeSection />
+                <AddEmployeeSection refreshEmployees={refreshEmployees} />
                 </Collapse>
 
                 <Button
@@ -84,7 +107,7 @@ const EmployeeSection = () => {
                                 <Paper elevation={3} sx={{ padding: 2 }}>
                                     <Grid container spacing={2}>
                                         <Grid item xs={1}>
-                                            <Typography variant="h6">ID</Typography>
+                                            <Typography variant="h6">EmpID</Typography>
                                         </Grid>
                                         <Grid item xs={3}>
                                             <Typography variant="h6">Name</Typography>
