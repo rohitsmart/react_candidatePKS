@@ -1,24 +1,42 @@
-import React, { useState } from 'react';
-import { Box, Typography, Grid, Paper, IconButton, Collapse, Button, Stack } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Box, Typography, Grid, Paper, IconButton, Collapse, Button, Stack, Pagination } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddEmployeeSection from './AddEmployeeSection';
-import { useEffect } from 'react';
-const employees = [
-    { id: 1, name: 'John Doe', email: 'john@example.com', designation: 'Software Engineer', joiningDate: '2023-01-15' },
-    { id: 2, name: 'Jane Smith', email: 'jane@example.com', designation: 'Product Manager', joiningDate: '2022-09-01' },
-    { id: 3, name: 'Alice Johnson', email: 'alice@example.com', designation: 'Designer', joiningDate: '2021-07-18' },
-    { id: 4, name: 'Bob Brown', email: 'bob@example.com', designation: 'Marketing', joiningDate: '2020-11-11' },
-];
+import ENDPOINTS from '../assests/Endpoints';
 
 const EmployeeSection = () => {
     const [openAdd, setOpenAdd] = useState(false);
     const [openView, setOpenView] = useState(true);
+    const [employees, setEmployees] = useState([]);
+    const [totalPages, setTotalPages] = useState(1);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [loading, setLoading] = useState(false);
+
     useEffect(() => {
-        document.title = 'Employee';
-    }, []);
+        const fetchEmployees = async (page = 0) => {
+            setLoading(true);
+            try {
+                const response = await axios.get(`${ENDPOINTS.GET_EMPLOYEES}?page=${page}&size=50`);
+                setEmployees(response.data.content);
+                setTotalPages(response.data.totalPages);
+                setCurrentPage(response.data.number);
+            } catch (error) {
+                console.error('Error fetching employees:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchEmployees();
+    }, [currentPage]);
+
+    const handlePageChange = (event, page) => {
+        setCurrentPage(page - 1);
+    };
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -40,7 +58,7 @@ const EmployeeSection = () => {
                     </IconButton>
                 </Button>
                 <Collapse in={openAdd}>
-                    <AddEmployeeSection/>
+                    <AddEmployeeSection />
                 </Collapse>
 
                 <Button
@@ -68,7 +86,7 @@ const EmployeeSection = () => {
                                         <Grid item xs={1}>
                                             <Typography variant="h6">ID</Typography>
                                         </Grid>
-                                        <Grid item xs={2}>
+                                        <Grid item xs={3}>
                                             <Typography variant="h6">Name</Typography>
                                         </Grid>
                                         <Grid item xs={3}>
@@ -80,46 +98,58 @@ const EmployeeSection = () => {
                                         <Grid item xs={2}>
                                             <Typography variant="h6">Joining Date</Typography>
                                         </Grid>
-                                        <Grid item xs={2}>
+                                        <Grid item xs={1}>
                                             <Typography variant="h6">Action</Typography>
                                         </Grid>
                                     </Grid>
                                 </Paper>
                             </Grid>
                             <Box sx={{ overflowY: 'auto', maxHeight: '60vh', width: '100%' }}>
-                                {employees.map((employee) => (
-                                    <Grid item xs={12} key={employee.id}>
-                                        <Paper elevation={1} sx={{ padding: 2 }}>
-                                            <Grid container spacing={2}>
-                                                <Grid item xs={1}>
-                                                    <Typography>{employee.id}</Typography>
+                                {loading ? (
+                                    <Typography>Loading...</Typography>
+                                ) : (
+                                    employees.map((employee) => (
+                                        <Grid item xs={12} key={employee.empId}>
+                                            <Paper elevation={1} sx={{ padding: 2 }}>
+                                                <Grid container spacing={2}>
+                                                    <Grid item xs={1}>
+                                                        <Typography>{employee.empId}</Typography>
+                                                    </Grid>
+                                                    <Grid item xs={3}>
+                                                        <Typography>{employee.name}</Typography>
+                                                    </Grid>
+                                                    <Grid item xs={3}>
+                                                        <Typography>{employee.email}</Typography>
+                                                    </Grid>
+                                                    <Grid item xs={2}>
+                                                        <Typography>{employee.designation}</Typography>
+                                                    </Grid>
+                                                    <Grid item xs={2}>
+                                                        <Typography>{employee.joiningDate || 'N/A'}</Typography>
+                                                    </Grid>
+                                                    <Grid item xs={1}>
+                                                        <IconButton color="primary">
+                                                            <EditIcon />
+                                                        </IconButton>
+                                                        <IconButton color="secondary">
+                                                            <DeleteIcon />
+                                                        </IconButton>
+                                                    </Grid>
                                                 </Grid>
-                                                <Grid item xs={2}>
-                                                    <Typography>{employee.name}</Typography>
-                                                </Grid>
-                                                <Grid item xs={3}>
-                                                    <Typography>{employee.email}</Typography>
-                                                </Grid>
-                                                <Grid item xs={2}>
-                                                    <Typography>{employee.designation}</Typography>
-                                                </Grid>
-                                                <Grid item xs={2}>
-                                                    <Typography>{employee.joiningDate}</Typography>
-                                                </Grid>
-                                                <Grid item xs={2}>
-                                                    <IconButton color="primary">
-                                                        <EditIcon />
-                                                    </IconButton>
-                                                    <IconButton color="secondary">
-                                                        <DeleteIcon />
-                                                    </IconButton>
-                                                </Grid>
-                                            </Grid>
-                                        </Paper>
-                                    </Grid>
-                                ))}
+                                            </Paper>
+                                        </Grid>
+                                    ))
+                                )}
                             </Box>
                         </Grid>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
+                            <Pagination
+                                count={totalPages}
+                                page={currentPage + 1}
+                                onChange={handlePageChange}
+                                color="primary"
+                            />
+                        </Box>
                     </Box>
                 </Collapse>
             </Stack>
