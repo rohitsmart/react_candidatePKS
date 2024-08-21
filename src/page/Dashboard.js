@@ -156,7 +156,6 @@ const Dashboard = (props) => {
                 {selectedSection === 'Interview' && scheduledCandidateId && (
                     <InterviewF2F candidateId={scheduledCandidateId} />
                 )}
-
             </Box>
         </Box>
     );
