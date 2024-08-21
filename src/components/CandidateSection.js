@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
 import {
-    Box, Typography, TextField, Button, Grid, MenuItem, Paper} from '@mui/material';
+    Box, Typography, TextField, Button, Grid, MenuItem, Paper
+} from '@mui/material';
 
 import { useEffect } from 'react';
 import { ViewCandidate } from './ViewCandidate';
-const employees = [
-    { id: '1', name: 'John Doe' },
-    { id: '2', name: 'Jane Smith' },
-    { id: '3', name: 'Emily Johnson' }
-];
+import { DatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 
 const candidateTypes = ['Front-end', 'Back-end', 'Mobile', 'Full Stack'];
 const statuses = ['APPLIED', 'INTERVIEWED', 'SELECTED', 'REJECTED', 'QUALIFYFORNEXTROUND'];
 
 const CandidateSection = () => {
+    const [employees, setEmployees] = useState([]);
     useEffect(() => {
         document.title = 'Candidate';
     }, []);
-    const [formData, setFormData] = useState({
+
+    const [candidate, setCandidate] = useState({
         firstName: '',
         lastName: '',
         email: '',
@@ -29,25 +29,40 @@ const CandidateSection = () => {
         masterPassOut: '',
         cvUrl: '',
         candidateType: '',
-        referralEmployeeId: '',
-        dob: '',
+        referralEmployeeId: 0,
+        dob: dayjs(),
         address: '',
         city: '',
         state: ''
     });
-    const [candidates, setCandidates] = useState([]);
+
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
+        if (e && e.target) {
+            const { name, value } = e.target;
+            setCandidate((prevState) => ({
+                ...prevState,
+                [name]: value
+            }));
+        } else if (dayjs.isDayjs(e)) {
+            setCandidate((prevState) => ({
+                ...prevState,
+                dob: e,
+            }));
+        }
     };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        setCandidates([...candidates, { candidateId: candidates.length + 1, ...formData }]);
-        console.log('Form submitted:', formData);
-        setFormData({
+        const formattedDate = candidate.dob ? candidate.dob.format('YYYY-MM-DD') : '';
+
+        const candidateData = {
+            ...candidate,
+            dob: formattedDate
+        };
+
+        console.log('Form submitted:', candidateData);
+
+        setCandidate({
             firstName: '',
             lastName: '',
             email: '',
@@ -59,13 +74,14 @@ const CandidateSection = () => {
             masterPassOut: '',
             cvUrl: '',
             candidateType: '',
-            referralEmployeeId: '',
-            dob: '',
+            referralEmployeeId: 0,
+            dob: dayjs(),
             address: '',
             city: '',
             state: ''
         });
     };
+   
     return (
         <Box sx={{ flexGrow: 1, padding: 3 }}>
             <Typography variant="h4" gutterBottom>
@@ -85,7 +101,7 @@ const CandidateSection = () => {
                                 fullWidth
                                 label="First Name"
                                 name="firstName"
-                                value={formData.firstName}
+                                value={candidate.firstName}
                                 onChange={handleChange}
                                 required
                                 variant="outlined"
@@ -96,7 +112,7 @@ const CandidateSection = () => {
                                 fullWidth
                                 label="Last Name"
                                 name="lastName"
-                                value={formData.lastName}
+                                value={candidate.lastName}
                                 onChange={handleChange}
                                 required
                                 variant="outlined"
@@ -108,7 +124,7 @@ const CandidateSection = () => {
                                 label="Email"
                                 name="email"
                                 type="email"
-                                value={formData.email}
+                                value={candidate.email}
                                 onChange={handleChange}
                                 required
                                 variant="outlined"
@@ -119,9 +135,18 @@ const CandidateSection = () => {
                                 fullWidth
                                 label="Phone"
                                 name="phone"
-                                value={formData.phone}
+                                value={candidate.phone}
                                 onChange={handleChange}
                                 variant="outlined"
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <DatePicker
+                                label="Date Of Birth"
+                                value={candidate.joiningDate}
+                                onChange={handleChange}
+                                renderInput={(params) => <TextField {...params} fullWidth margin="normal" />}
+                                sx={{ mt: 2 }}
                             />
                         </Grid>
                     </Grid>
@@ -135,7 +160,7 @@ const CandidateSection = () => {
                                 fullWidth
                                 label="High School Pass Out Year"
                                 name="highSchoolPassOut"
-                                value={formData.highSchoolPassOut}
+                                value={candidate.highSchoolPassOut}
                                 onChange={handleChange}
                                 variant="outlined"
                             />
@@ -145,7 +170,7 @@ const CandidateSection = () => {
                                 fullWidth
                                 label="Intermediate Pass Out Year"
                                 name="intermediatePassOut"
-                                value={formData.intermediatePassOut}
+                                value={candidate.intermediatePassOut}
                                 onChange={handleChange}
                                 variant="outlined"
                             />
@@ -156,7 +181,7 @@ const CandidateSection = () => {
                                 fullWidth
                                 label="Bachelor Degree"
                                 name="bachelorDegree"
-                                value={formData.bachelorDegree}
+                                value={candidate.bachelorDegree}
                                 onChange={handleChange}
                                 variant="outlined"
                             />
@@ -166,7 +191,7 @@ const CandidateSection = () => {
                                 fullWidth
                                 label="Bachelor Pass Out Year"
                                 name="bachelorPassOut"
-                                value={formData.bachelorPassOut}
+                                value={candidate.bachelorPassOut}
                                 onChange={handleChange}
                                 variant="outlined"
                             />
@@ -176,7 +201,7 @@ const CandidateSection = () => {
                                 fullWidth
                                 label="Master Degree"
                                 name="masterDegree"
-                                value={formData.masterDegree}
+                                value={candidate.masterDegree}
                                 onChange={handleChange}
                                 variant="outlined"
                             />
@@ -186,7 +211,7 @@ const CandidateSection = () => {
                                 fullWidth
                                 label="Master Pass Out Year"
                                 name="masterPassOut"
-                                value={formData.masterPassOut}
+                                value={candidate.masterPassOut}
                                 onChange={handleChange}
                                 variant="outlined"
                             />
@@ -202,7 +227,7 @@ const CandidateSection = () => {
                                 fullWidth
                                 label="City"
                                 name="city"
-                                value={formData.city}
+                                value={candidate.city}
                                 onChange={handleChange}
                                 variant="outlined"
                             />
@@ -212,7 +237,7 @@ const CandidateSection = () => {
                                 fullWidth
                                 label="State"
                                 name="state"
-                                value={formData.state}
+                                value={candidate.state}
                                 onChange={handleChange}
                                 variant="outlined"
                             />
@@ -224,7 +249,7 @@ const CandidateSection = () => {
                                 name="address"
                                 multiline
                                 rows={4}
-                                value={formData.address}
+                                value={candidate.address}
                                 onChange={handleChange}
                                 variant="outlined"
                             />
@@ -241,7 +266,7 @@ const CandidateSection = () => {
                                 select
                                 label="Status"
                                 name="status"
-                                value={formData.status}
+                                value={candidate.status}
                                 onChange={handleChange}
                                 variant="outlined"
                                 required
@@ -261,7 +286,7 @@ const CandidateSection = () => {
                                 select
                                 label="Candidate Type"
                                 name="candidateType"
-                                value={formData.candidateType}
+                                value={candidate.candidateType}
                                 onChange={handleChange}
                                 variant="outlined"
                                 required
@@ -280,7 +305,7 @@ const CandidateSection = () => {
                                 fullWidth
                                 label="CV URL"
                                 name="cvUrl"
-                                value={formData.cvUrl}
+                                value={candidate.cvUrl}
                                 onChange={handleChange}
                                 variant="outlined"
                             />
@@ -291,7 +316,7 @@ const CandidateSection = () => {
                                 select
                                 label="Referral Employee"
                                 name="referralEmployeeId"
-                                value={formData.referralEmployeeId}
+                                value={candidate.referralEmployeeId}
                                 onChange={handleChange}
                                 variant="outlined"
                                 SelectProps={{
@@ -316,7 +341,7 @@ const CandidateSection = () => {
                     </Button>
                 </form>
             </Paper>
-            <ViewCandidate/>
+            <ViewCandidate />
         </Box>
     );
 };
