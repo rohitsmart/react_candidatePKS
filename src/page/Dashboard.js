@@ -26,9 +26,11 @@ const Dashboard = (props) => {
     const dispatch = useDispatch();
     const showSnackbar = useContext(SnackbarContext);
     const navigate = useNavigate();
+
     useEffect(() => {
         document.title = 'Dashboard';
     }, []);
+
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [selectedSection, setSelectedSection] = useState('Home');
     const [scheduledCandidateId, setScheduledCandidateId] = useState(null);
@@ -44,6 +46,7 @@ const Dashboard = (props) => {
         setScheduledCandidateId(candidateId);
         handleSectionChange('Interview');
     };
+
     const handleSectionChange = (section) => {
         if (section === 'Logout') {
             handleLogout();
@@ -51,6 +54,7 @@ const Dashboard = (props) => {
             setSelectedSection(section);
         }
     };
+
     const handleLogout = () => {
         dispatch(clearToken());
         showSnackbar('You have been logged out successfully.', 'success');
@@ -92,7 +96,21 @@ const Dashboard = (props) => {
                             icon = null;
                     }
                     return (
-                        <ListItem button key={text} onClick={() => handleSectionChange(text)}>
+                        <ListItem 
+                            button 
+                            key={text} 
+                            onClick={() => handleSectionChange(text)}
+                            selected={selectedSection === text} // Highlight the selected section
+                            sx={{
+                                '&.Mui-selected': {
+                                    backgroundColor: theme.palette.action.selected,
+                                    color: theme.palette.primary.main,
+                                    '& .MuiListItemIcon-root': {
+                                        color: theme.palette.primary.main,
+                                    },
+                                }
+                            }}
+                        >
                             <ListItemIcon>
                                 {icon}
                             </ListItemIcon>
