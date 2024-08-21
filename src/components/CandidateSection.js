@@ -91,33 +91,34 @@ const CandidateSection = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
-        // Validate and format the date
+
+        // Format the date properly
         const dob = new Date(candidate.dob);
         if (isNaN(dob.getTime())) {
             console.error('Invalid date format');
             return;
         }
-        const formattedDate = dob.toLocaleDateString('en-GB'); // 'dd/MM/yyyy' format
-    
-        // Prepare the candidate data
+        const formattedDate = dob.toLocaleDateString('en-GB'); // Adjust as needed
+
+        // Prepare candidate data excluding fields not expected by the API
         const candidateData = {
             ...candidate,
-            dob: formattedDate // Format the date as needed
+            dob: formattedDate,
+            // Make sure to exclude 'city' if it's not expected by your backend
+            // city: undefined, // Optional: explicitly remove fields not needed
         };
-    
+
         console.log('Submitting candidate data:', candidateData);
-    
-        // Make the API request using axios
+
         try {
             const response = await axios.post(ENDPOINTS.SAVE_CANDIDATE, candidateData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
-    
+
             console.log('Success:', response.data);
-    
+
             // Reset the form fields
             setCandidate({
                 firstName: '',
@@ -141,8 +142,9 @@ const CandidateSection = () => {
             console.error('Error submitting candidate data:', error.response ? error.response.data : error.message);
         }
     };
-    
-    
+
+
+
     return (
         <Box sx={{ flexGrow: 1, padding: 3 }}>
             <Typography variant="h4" gutterBottom>
@@ -284,8 +286,8 @@ const CandidateSection = () => {
                         <Grid item xs={12} md={6}>
                             <TextField
                                 fullWidth
-                                label="City"
-                                name="city"
+                                label="District"
+                                name="district"
                                 value={candidate.district}
                                 onChange={handleChange}
                                 variant="outlined"
@@ -314,6 +316,7 @@ const CandidateSection = () => {
                             />
                         </Grid>
                     </Grid>
+
                     <Typography variant="h6" gutterBottom sx={{ marginTop: 3 }}>
                         Referral Details
                     </Typography>
