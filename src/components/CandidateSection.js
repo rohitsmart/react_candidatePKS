@@ -31,7 +31,7 @@ const CandidateSection = () => {
         referralEmployeeId: 0,
         dob: dayjs(),
         address: '',
-        city: '',
+        district: '',
         state: ''
     });
 
@@ -89,33 +89,60 @@ const CandidateSection = () => {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const formattedDate = candidate.dob ? candidate.dob.format('YYYY-MM-DD') : '';
+    
+        // Validate and format the date
+        const dob = new Date(candidate.dob);
+        if (isNaN(dob.getTime())) {
+            console.error('Invalid date format');
+            return;
+        }
+        const formattedDate = dob.toLocaleDateString('en-GB'); // 'dd/MM/yyyy' format
+    
+        // Prepare the candidate data
         const candidateData = {
             ...candidate,
-            dob: formattedDate
+            dob: formattedDate // Format the date as needed
         };
-        console.log('Form submitted:', candidateData);
-        setCandidate({
-            firstName: '',
-            lastName: '',
-            email: '',
-            phone: '',
-            status: '',
-            highSchoolPassOut: '',
-            intermediatePassOut: '',
-            bachelorPassOut: '',
-            masterPassOut: '',
-            cvUrl: '',
-            candidateType: '',
-            referralEmployeeId: 0,
-            dob: dayjs(),
-            address: '',
-            city: '',
-            state: ''
-        });
+    
+        console.log('Submitting candidate data:', candidateData);
+    
+        // Make the API request using axios
+        try {
+            const response = await axios.post(ENDPOINTS.SAVE_CANDIDATE, candidateData, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+    
+            console.log('Success:', response.data);
+    
+            // Reset the form fields
+            setCandidate({
+                firstName: '',
+                lastName: '',
+                email: '',
+                phone: '',
+                status: '',
+                highSchoolPassOut: '',
+                intermediatePassOut: '',
+                bachelorPassOut: '',
+                masterPassOut: '',
+                cvUrl: '',
+                candidateType: '',
+                referralEmployeeId: 0,
+                dob: '', // Reset date field
+                address: '',
+                district: '',
+                state: ''
+            });
+        } catch (error) {
+            console.error('Error submitting candidate data:', error.response ? error.response.data : error.message);
+        }
     };
+    
+    
     return (
         <Box sx={{ flexGrow: 1, padding: 3 }}>
             <Typography variant="h4" gutterBottom>
@@ -259,7 +286,7 @@ const CandidateSection = () => {
                                 fullWidth
                                 label="City"
                                 name="city"
-                                value={candidate.city}
+                                value={candidate.district}
                                 onChange={handleChange}
                                 variant="outlined"
                             />
