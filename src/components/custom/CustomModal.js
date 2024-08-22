@@ -4,9 +4,9 @@ import { Modal, Box, Typography, TextField, Button, Grid } from '@mui/material';
 const CustomModal = ({ open, handleClose, candidateData, handleSubmit }) => {
   const [formData, setFormData] = React.useState({
     candidateId: candidateData.candidateId,
-    date: '',
-    time: '',
-    employerName: '',
+    date: candidateData.scheduled ? candidateData.interviewDate.split(' ')[0] : '',
+    time: candidateData.scheduled ? candidateData.interviewDate.split(' ')[1] : '',
+    employerName: candidateData.scheduled ? candidateData.referralEmployee : '',
   });
 
   const handleChange = (e) => {
@@ -43,7 +43,7 @@ const CustomModal = ({ open, handleClose, candidateData, handleSubmit }) => {
         }}
       >
         <Typography id="modal-modal-title" variant="h6" component="h2">
-          Create Schedule for {candidateData.firstName} {candidateData.lastName}
+          {candidateData.scheduled ? 'Update Schedule' : 'Create Schedule'} for {candidateData.firstName} {candidateData.lastName}
         </Typography>
 
         <TextField
@@ -84,6 +84,7 @@ const CustomModal = ({ open, handleClose, candidateData, handleSubmit }) => {
           label="Employer Name"
           name="employerName"
           value={formData.employerName}
+          disabled={candidateData.scheduled}
           onChange={handleChange}
           fullWidth
           margin="normal"

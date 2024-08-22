@@ -17,14 +17,10 @@ export const ScheduleSection = () => {
     const [loading, setLoading] = useState(true);
 
     const handleScheduleClick = (candidate) => {
-        if (candidate.scheduled) {
-            console.log("Update schedule for:", candidate);
-            // Your update schedule functionality
-        } else {
-            setSelectedCandidate(candidate);
-            setOpenModal(true);
-        }
+        setSelectedCandidate(candidate);
+        setOpenModal(true);
     };
+    
 
     const handleModalClose = () => {
         setOpenModal(false);

@@ -25,6 +25,9 @@ const CustomCard = ({ candidate, handleScheduleClick }) => {
           {candidate.candidateType}
         </Typography>
         <Typography variant="body2">
+          Candidate ID: {candidate.candidateId}
+        </Typography>
+        <Typography variant="body2">
           Email: {candidate.email}
         </Typography>
         <Typography variant="body2">
