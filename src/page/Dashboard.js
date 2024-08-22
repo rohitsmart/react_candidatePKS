@@ -33,7 +33,6 @@ const Dashboard = (props) => {
 
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [selectedSection, setSelectedSection] = useState('Home');
-    const [scheduledCandidateId, setScheduledCandidateId] = useState(null);
 
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -42,10 +41,7 @@ const Dashboard = (props) => {
         setMobileOpen(!mobileOpen);
     };
 
-    const handleScheduleConfirmed = (candidateId) => {
-        setScheduledCandidateId(candidateId);
-        handleSectionChange('Interview');
-    };
+
 
     const handleSectionChange = (section) => {
         if (section === 'Logout') {
@@ -173,12 +169,10 @@ const Dashboard = (props) => {
                 {selectedSection === 'Home' && <HomeSection />}
                 {selectedSection === 'Employee' && <EmployeeSection />}
                 {selectedSection === 'Candidate' && <CandidateSection />}
-                {selectedSection === 'Schedule' && (
-                    <ScheduleSection onScheduleConfirmed={handleScheduleConfirmed} />
-                )}
-                {selectedSection === 'Interview' && scheduledCandidateId && (
-                    <InterviewF2F candidateId={scheduledCandidateId} />
-                )}
+                {selectedSection === 'Schedule' && <ScheduleSection />}
+
+
+    
             </Box>
         </Box>
     );
