@@ -83,7 +83,7 @@ export const ViewCandidate = () => {
                         View Candidates
                     </Typography>
                 </Grid>
-                <Grid item xs={12} sm={6} container justifyContent="flex-end">
+                <Grid item xs={12} sm={6} container justifyContent="flex-end" alignItems="center">
                     <TextField
                         label="Filter by Date"
                         name="date"
@@ -95,7 +95,7 @@ export const ViewCandidate = () => {
                         onChange={handleFilterChange}
                         sx={{ marginRight: 2 }}
                     />
-                    <FormControl variant="outlined">
+                    <FormControl variant="outlined" sx={{ marginRight: 2, minWidth: 120 }}>
                         <InputLabel>Status</InputLabel>
                         <Select
                             name="status"
@@ -111,7 +111,7 @@ export const ViewCandidate = () => {
                             ))}
                         </Select>
                     </FormControl>
-                    <IconButton aria-label="filter" sx={{ marginLeft: 2 }}>
+                    <IconButton aria-label="filter" sx={{ color: 'primary.main' }}>
                         <FilterListIcon />
                     </IconButton>
                 </Grid>
@@ -123,19 +123,15 @@ export const ViewCandidate = () => {
                 </Grid>
             ) : (
                 <>
-                    <TableContainer component={Paper} sx={{ marginTop: 3 }}>
+                    <TableContainer component={Paper} sx={{ marginTop: 3, border: '1px solid #ddd' }}>
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>Candidate ID</TableCell>
-                                    <TableCell>First Name</TableCell>
-                                    <TableCell>Last Name</TableCell>
-                                    <TableCell>Email</TableCell>
-                                    <TableCell>Phone</TableCell>
-                                    <TableCell>Status</TableCell>
-                                    <TableCell>Candidate Type</TableCell>
-                                    <TableCell>Referral Employee</TableCell>
-                                    <TableCell>Actions</TableCell>
+                                    {['Candidate ID', 'First Name', 'Last Name', 'Email', 'Phone', 'Status', 'Candidate Type', 'Referral Employee', 'Actions'].map(header => (
+                                        <TableCell key={header} sx={{ fontWeight: 'bold', borderBottom: '2px solid #ddd' }}>
+                                            {header}
+                                        </TableCell>
+                                    ))}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -146,14 +142,14 @@ export const ViewCandidate = () => {
                                         <TableCell>{candidate.lastName}</TableCell>
                                         <TableCell>{candidate.email}</TableCell>
                                         <TableCell>{candidate.phone}</TableCell>
+                                        <TableCell>{candidate.status}</TableCell>
                                         <TableCell>{candidate.candidateType}</TableCell>
                                         <TableCell>{candidate.referralEmployee || 'N/A'}</TableCell>
-                                        <TableCell>{candidate.status}</TableCell>
                                         <TableCell>
-                                            <IconButton aria-label="edit" onClick={() => handleEdit(candidate)}>
+                                            <IconButton aria-label="edit" onClick={() => handleEdit(candidate)} sx={{ color: 'primary.main' }}>
                                                 <EditIcon />
                                             </IconButton>
-                                            <IconButton aria-label="delete" onClick={() => handleDelete(candidate)}>
+                                            <IconButton aria-label="delete" onClick={() => handleDelete(candidate)} sx={{ color: 'error.main' }}>
                                                 <DeleteIcon />
                                             </IconButton>
                                         </TableCell>
@@ -169,7 +165,8 @@ export const ViewCandidate = () => {
                         onPageChange={handleChangePage}
                         rowsPerPage={rowsPerPage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
-                        rowsPerPageOptions={[5, 10, 20,50]}
+                        rowsPerPageOptions={[5, 10, 20, 50]}
+                        sx={{ marginTop: 2 }}
                     />
                 </>
             )}
