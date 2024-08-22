@@ -21,14 +21,12 @@ export const ScheduleSection = () => {
                     },
                 });
                 showSnackbar('candidate fetched successfully:', 'success');
-
                 setCandidates(response.data.candidates);
             } catch (error) {
                 showSnackbar('Error fetching  candidate:', 'error');
             }
             finally{
                 setLoading(false);
-
             }
         };
         fetchCandidates();
@@ -50,6 +48,5 @@ export const ScheduleSection = () => {
                 )}
             </Grid>
         </Container>
-
     );
 };
