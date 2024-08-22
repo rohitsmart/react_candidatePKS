@@ -1,8 +1,13 @@
 import React from 'react';
-import { Modal, Box, Typography, TextField, Button } from '@mui/material';
+import { Modal, Box, Typography, TextField, Button, Grid } from '@mui/material';
 
 const CustomModal = ({ open, handleClose, candidateData, handleSubmit }) => {
-  const [formData, setFormData] = React.useState({ ...candidateData });
+  const [formData, setFormData] = React.useState({
+    candidateId: candidateData.candidateId,
+    date: '',
+    time: '',
+    employerName: '',
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -15,10 +20,6 @@ const CustomModal = ({ open, handleClose, candidateData, handleSubmit }) => {
   const handleFormSubmit = () => {
     handleSubmit(formData);
     handleClose();
-  };
-
-  const handleCancel = () => {
-
   };
 
   return (
@@ -42,44 +43,55 @@ const CustomModal = ({ open, handleClose, candidateData, handleSubmit }) => {
         }}
       >
         <Typography id="modal-modal-title" variant="h6" component="h2">
-          Edit Candidate Details
+          Create Schedule for {candidateData.firstName} {candidateData.lastName}
         </Typography>
+
         <TextField
-          label="First Name"
-          name="firstName"
-          value={formData.firstName}
+          label="Candidate ID"
+          name="candidateId"
+          value={formData.candidateId}
+          disabled
+          fullWidth
+          margin="normal"
+        />
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <TextField
+              label="Date"
+              name="date"
+              type="date"
+              value={formData.date}
+              onChange={handleChange}
+              InputLabelProps={{ shrink: true }}
+              fullWidth
+              margin="normal"
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              label="Time"
+              name="time"
+              type="time"
+              value={formData.time}
+              onChange={handleChange}
+              InputLabelProps={{ shrink: true }}
+              fullWidth
+              margin="normal"
+            />
+          </Grid>
+        </Grid>
+        <TextField
+          label="Employer Name"
+          name="employerName"
+          value={formData.employerName}
           onChange={handleChange}
           fullWidth
           margin="normal"
         />
-        <TextField
-          label="Last Name"
-          name="lastName"
-          value={formData.lastName}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Phone"
-          name="phone"
-          value={formData.phone}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-        />
-        <Button variant="contained" onClick={handleFormSubmit} fullWidth>
-          Submit
+        <Button variant="contained" onClick={handleFormSubmit} fullWidth sx={{ mt: 2 }}>
+          Save
         </Button>
-        <Button variant="contained" onClick={handleCancel} fullWidth>
+        <Button variant="contained" onClick={handleClose} fullWidth sx={{ mt: 2 }}>
           Cancel
         </Button>
       </Box>

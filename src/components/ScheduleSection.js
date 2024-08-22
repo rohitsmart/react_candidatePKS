@@ -3,12 +3,15 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { Grid, Container } from '@mui/material';
 import CustomCard from './custom/CustomCard';
+import CustomModal from './custom/CustomModal';  // Import the modal
 import ENDPOINTS from '../assests/Endpoints';
 import { SnackbarContext } from '../App';
 import { CubicalLoader } from './custom/CubicalLoader';
 
 export const ScheduleSection = () => {
     const [candidates, setCandidates] = useState([]);
+    const [selectedCandidate, setSelectedCandidate] = useState(null);
+    const [openModal, setOpenModal] = useState(false);
     const showSnackbar = useContext(SnackbarContext);
     const token = useSelector((state) => state.auth.token);
     const [loading, setLoading] = useState(true);
@@ -16,9 +19,21 @@ export const ScheduleSection = () => {
     const handleScheduleClick = (candidate) => {
         if (candidate.scheduled) {
             console.log("Update schedule for:", candidate);
+            // Your update schedule functionality
         } else {
-            console.log("Create schedule for:", candidate);
+            setSelectedCandidate(candidate);
+            setOpenModal(true);
         }
+    };
+
+    const handleModalClose = () => {
+        setOpenModal(false);
+        setSelectedCandidate(null);
+    };
+
+    const handleScheduleSubmit = (formData) => {
+        console.log("Scheduling for candidate:", formData);
+        // Implement the schedule submission logic here, such as sending the data to an API.
     };
 
     useEffect(() => {
@@ -59,6 +74,15 @@ export const ScheduleSection = () => {
                     </Grid>
                 )}
             </Grid>
+
+            {selectedCandidate && (
+                <CustomModal
+                    open={openModal}
+                    handleClose={handleModalClose}
+                    candidateData={selectedCandidate}
+                    handleSubmit={handleScheduleSubmit}
+                />
+            )}
         </Container>
     );
 };
