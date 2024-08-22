@@ -31,7 +31,6 @@ const candidates = [
         applicationDate: '2024-08-19T11:00:00',
         schedule: false,
     },
-    // Add more candidates as needed
 ];
 
 const employers = [

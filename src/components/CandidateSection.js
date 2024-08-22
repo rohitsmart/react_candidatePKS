@@ -13,7 +13,16 @@ import ENDPOINTS from '../assests/Endpoints';
 import { SnackbarContext } from '../App';
 import LoadingButton from './custom/LoadingButton';
 const candidateTypes = ['Front-end', 'Back-end', 'Mobile', 'Full Stack'];
-const statuses = ['APPLIED', 'INTERVIEWED', 'SELECTED', 'REJECTED', 'QUALIFYFORNEXTROUND'];
+const statuses = [
+    'APPLICATION_RECEIVED',
+    'INTERVIEW_SCHEDULED',
+    'INTERVIEW_COMPLETED',
+    'OFFER_EXTENDED',
+    'OFFER_ACCEPTED',
+    'OFFER_REJECTED',
+    'REJECTED',
+    'QUALIFIED_FOR_NEXT_ROUND'
+];
 const CandidateSection = () => {
     const [isLoading, setIsLoading] = useState(false);
     const showSnackbar = useContext(SnackbarContext);

@@ -11,8 +11,16 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import ENDPOINTS from '../assests/Endpoints';
 
-const statuses = ['APPLIED', 'INTERVIEWED', 'SELECTED', 'REJECTED', 'QUALIFYFORNEXTROUND'];
-
+const statuses = [
+    'APPLICATION_RECEIVED',
+    'INTERVIEW_SCHEDULED',
+    'INTERVIEW_COMPLETED',
+    'OFFER_EXTENDED',
+    'OFFER_ACCEPTED',
+    'OFFER_REJECTED',
+    'REJECTED',
+    'QUALIFIED_FOR_NEXT_ROUND'
+];
 export const ViewCandidate = () => {
     const [candidates, setCandidates] = useState([]);
     const [totalCandidates, setTotalCandidates] = useState(0);
