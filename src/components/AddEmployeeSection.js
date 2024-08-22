@@ -11,10 +11,19 @@ const designations = [
     { value: 'BACKEND_DEV', label: 'Back-end Developer' },
     { value: 'FULLSTACK_DEV', label: 'Fullstack Developer' },
     { value: 'FRONTEND_DEV', label: 'Front-end Developer' },
+    { value: 'JUNIOR_HR', label: 'Junior HR' },
+    { value: 'SENIOR_HR', label: 'Senior HR' },
+    { value: 'MANAGER', label: 'Manager' },
+    { value: 'HR', label: 'HR' },
+    { value: 'JUNIOR_MANAGER', label: 'Junior Manager' },
+    { value: 'CEO', label: 'Chief Executive Officer' },
+    { value: 'SOFTWARE_ENGINEER', label: 'Software Engineer' },
+    { value: 'NATIVE_DEV', label: 'Native Developer' },
+    { value: 'FLUTTER_DEV', label: 'Flutter Developer' },
 ];
 
+
 const roles = [
-    { value: 'ADMIN', label: 'Admin' },
     { value: 'Employee', label: 'Employee' },
 ];
 
