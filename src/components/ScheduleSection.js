@@ -13,6 +13,31 @@ import WarningDialog from './WarningDialog';
 import { useEffect } from 'react';
 import axios from 'axios';
 import ENDPOINTS from '../assests/Endpoints';
+import { useSelector } from 'react-redux';
+
+const getStatusColor = (status) => {
+    switch (status) {
+        case 'APPLICATION_RECEIVED':
+            return 'blue';
+        case 'INTERVIEW_SCHEDULED':
+            return 'orange';
+        case 'INTERVIEW_COMPLETED':
+            return 'green';
+        case 'OFFER_EXTENDED':
+            return 'purple';
+        case 'OFFER_ACCEPTED':
+            return 'teal';
+        case 'OFFER_REJECTED':
+            return 'red';
+        case 'REJECTED':
+            return 'grey';
+        case 'QUALIFIED_FOR_NEXT_ROUND':
+            return 'yellow';
+        default:
+            return 'default';
+    }
+};
+
 
 export const ScheduleSection = ({ onScheduleConfirmed }) => {
     const [loading, setLoading] = useState(false);
@@ -36,6 +61,7 @@ export const ScheduleSection = ({ onScheduleConfirmed }) => {
     const [statusFilter, setStatusFilter] = useState('');
 
     const theme = useTheme();
+    const { empId, designation, role } = useSelector((state) => state.auth.user);
 
     useEffect(() => {
         document.title = 'Schedule';
@@ -61,7 +87,6 @@ export const ScheduleSection = ({ onScheduleConfirmed }) => {
 
     const handleEmployeeSelect = (event, value) => {
         if (value) {
-
             setSearchQuery(value.fullName);
         } else {
         }
@@ -344,26 +369,4 @@ export const ScheduleSection = ({ onScheduleConfirmed }) => {
     );
 };
 
-const getStatusColor = (status) => {
-    switch (status) {
-        case 'APPLICATION_RECEIVED':
-            return 'blue';
-        case 'INTERVIEW_SCHEDULED':
-            return 'orange';
-        case 'INTERVIEW_COMPLETED':
-            return 'green';
-        case 'OFFER_EXTENDED':
-            return 'purple';
-        case 'OFFER_ACCEPTED':
-            return 'teal';
-        case 'OFFER_REJECTED':
-            return 'red';
-        case 'REJECTED':
-            return 'grey';
-        case 'QUALIFIED_FOR_NEXT_ROUND':
-            return 'yellow';
-        default:
-            return 'default';
-    }
-};
 
