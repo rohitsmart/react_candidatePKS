@@ -2,14 +2,12 @@ import React from 'react';
 import { Card, CardContent, Typography, Button, Box } from '@mui/material';
 import { styled, keyframes } from '@mui/system';
 
-// Animation for the label
 const blink = keyframes`
   0% { opacity: 1; }
   50% { opacity: 0.5; }
   100% { opacity: 1; }
 `;
 
-// Styled components for labels
 const StatusLabel = styled('div')(({ scheduled }) => ({
   color: scheduled ? 'green' : 'red',
   fontWeight: 'bold',
@@ -36,14 +34,18 @@ const CustomCard = ({ candidate, handleScheduleClick }) => {
           Status: {candidate.status}
         </Typography>
 
-        {/* Displaying the scheduling status with animated label */}
+        <Typography variant="body2">
+          Application Date: {candidate.applicationDate || 'N/A'}
+        </Typography>
+        <Typography variant="body2">
+          Interview Date: {candidate.interviewDate || 'N/A'}
+        </Typography>
+
         <Box sx={{ mt: 2, mb: 2 }}>
           <StatusLabel scheduled={candidate.scheduled}>
             {candidate.scheduled ? 'Scheduled' : 'Not Scheduled'}
           </StatusLabel>
         </Box>
-
-        {/* Display appropriate button based on the scheduling status */}
         <Button 
           variant="contained" 
           sx={{ mt: 2 }} 

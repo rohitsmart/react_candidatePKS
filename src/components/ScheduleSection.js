@@ -14,7 +14,6 @@ export const ScheduleSection = () => {
     const [loading, setLoading] = useState(true);
 
     const handleScheduleClick = (candidate) => {
-        // Logic for scheduling or updating the schedule
         if (candidate.scheduled) {
             console.log("Update schedule for:", candidate);
         } else {
