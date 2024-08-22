@@ -41,16 +41,22 @@ const employers = [
 
 const getStatusColor = (status) => {
     switch (status) {
-        case 'APPLIED':
+        case 'APPLICATION_RECEIVED':
             return 'blue';
-        case 'INTERVIEWED':
+        case 'INTERVIEW_SCHEDULED':
             return 'orange';
-        case 'SELECTED':
+        case 'INTERVIEW_COMPLETED':
             return 'green';
+        case 'OFFER_EXTENDED':
+            return 'purple';
+        case 'OFFER_ACCEPTED':
+            return 'lightgreen';
+        case 'OFFER_REJECTED':
+            return 'darkred';
         case 'REJECTED':
             return 'red';
-        case 'QUALIFYFORNEXTROUND':
-            return 'purple';
+        case 'QUALIFIED_FOR_NEXT_ROUND':
+            return 'violet';
         default:
             return 'gray';
     }
