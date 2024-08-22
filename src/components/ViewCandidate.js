@@ -127,7 +127,7 @@ export const ViewCandidate = () => {
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    {['Candidate ID', 'First Name', 'Last Name', 'Email', 'Phone', 'Status', 'Candidate Type', 'Referral Employee', 'Actions'].map(header => (
+                                    {['Candidate ID', 'First Name', 'Last Name', 'Email', 'Phone','Application Date', 'Candidate Type', 'Referral Employee','Status', 'Actions'].map(header => (
                                         <TableCell key={header} sx={{ fontWeight: 'bold', borderBottom: '2px solid #ddd' }}>
                                             {header}
                                         </TableCell>
@@ -142,9 +142,10 @@ export const ViewCandidate = () => {
                                         <TableCell>{candidate.lastName}</TableCell>
                                         <TableCell>{candidate.email}</TableCell>
                                         <TableCell>{candidate.phone}</TableCell>
-                                        <TableCell>{candidate.status}</TableCell>
+                                        <TableCell>{candidate.applicationDate}</TableCell>
                                         <TableCell>{candidate.candidateType}</TableCell>
                                         <TableCell>{candidate.referralEmployee || 'N/A'}</TableCell>
+                                        <TableCell>{candidate.status}</TableCell>
                                         <TableCell>
                                             <IconButton aria-label="edit" onClick={() => handleEdit(candidate)} sx={{ color: 'primary.main' }}>
                                                 <EditIcon />
