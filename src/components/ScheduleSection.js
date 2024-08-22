@@ -12,6 +12,16 @@ export const ScheduleSection = () => {
     const showSnackbar = useContext(SnackbarContext);
     const token = useSelector((state) => state.auth.token);
     const [loading, setLoading] = useState(true);
+
+    const handleScheduleClick = (candidate) => {
+        // Logic for scheduling or updating the schedule
+        if (candidate.scheduled) {
+            console.log("Update schedule for:", candidate);
+        } else {
+            console.log("Create schedule for:", candidate);
+        }
+    };
+
     useEffect(() => {
         const fetchCandidates = async () => {
             try {
@@ -20,25 +30,28 @@ export const ScheduleSection = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                showSnackbar('candidate fetched successfully:', 'success');
+                showSnackbar('Candidates fetched successfully:', 'success');
                 setCandidates(response.data.candidates);
             } catch (error) {
-                showSnackbar('Error fetching  candidate:', 'error');
-            }
-            finally{
+                showSnackbar('Error fetching candidates:', 'error');
+            } finally {
                 setLoading(false);
             }
         };
         fetchCandidates();
     }, [token]);
+
     return (
         <Container sx={{ mt: 4 }} maxWidth="xl">
-             {loading && <CubicalLoader />}
+            {loading && <CubicalLoader />}
             <Grid container spacing={3}>
                 {candidates.length > 0 ? (
                     candidates.map((candidate) => (
                         <Grid item xs={12} sm={6} md={4} lg={3} key={candidate.candidateId}>
-                            <CustomCard candidate={candidate} />
+                            <CustomCard 
+                                candidate={candidate} 
+                                handleScheduleClick={handleScheduleClick}
+                            />
                         </Grid>
                     ))
                 ) : (
