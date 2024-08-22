@@ -11,7 +11,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import ENDPOINTS from '../assests/Endpoints';
 
-const candidateTypes = ['Front-end', 'Back-end', 'Mobile', 'Full Stack'];
 const statuses = ['APPLIED', 'INTERVIEWED', 'SELECTED', 'REJECTED', 'QUALIFYFORNEXTROUND'];
 
 export const ViewCandidate = () => {
@@ -142,14 +141,14 @@ export const ViewCandidate = () => {
                             <TableBody>
                                 {candidates.map((candidate, index) => (
                                     <TableRow key={index}>
-                                        <TableCell>{candidate.candidateId}</TableCell>
+                                        <TableCell>{candidate.candidateId || 'N/A'}</TableCell>
                                         <TableCell>{candidate.firstName}</TableCell>
                                         <TableCell>{candidate.lastName}</TableCell>
                                         <TableCell>{candidate.email}</TableCell>
                                         <TableCell>{candidate.phone}</TableCell>
-                                        <TableCell>{candidate.status}</TableCell>
                                         <TableCell>{candidate.candidateType}</TableCell>
                                         <TableCell>{candidate.referralEmployee || 'N/A'}</TableCell>
+                                        <TableCell>{candidate.status}</TableCell>
                                         <TableCell>
                                             <IconButton aria-label="edit" onClick={() => handleEdit(candidate)}>
                                                 <EditIcon />
@@ -163,7 +162,6 @@ export const ViewCandidate = () => {
                             </TableBody>
                         </Table>
                     </TableContainer>
-
                     <TablePagination
                         component="div"
                         count={totalCandidates}
@@ -171,7 +169,7 @@ export const ViewCandidate = () => {
                         onPageChange={handleChangePage}
                         rowsPerPage={rowsPerPage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
-                        rowsPerPageOptions={[10, 25, 50]}
+                        rowsPerPageOptions={[5, 10, 20,50]}
                     />
                 </>
             )}
