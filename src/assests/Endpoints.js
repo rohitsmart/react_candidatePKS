@@ -11,9 +11,7 @@ export const ENDPOINTS = {
     INTERVIEW_SCHEDULED: `${BASE_URL}protected/interview/schedule`,
     FECTH_ALL_INTERVIEW_SCHEDULED: `${BASE_URL}protected/interview/fetchAllSchedule`,
     FETCH_CANDIDATE_DATA: `${BASE_URL}protected/interview/fetch-interview-for-candidate`,
-
-    // http://localhost:8080/api/protected/interview/fetch-interview-for-candidate?candidateID=CD0004
-
+    COMPLETE_INTERVIEW: `${BASE_URL}protected/interview/complete-interview`,
 
 };
 

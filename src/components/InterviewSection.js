@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { Grid, Typography } from '@mui/material';
 import ENDPOINTS from '../assests/Endpoints';
 import CustomInterviewCard from './custom/CustomInterviewCard';
 import InterviewModal from './custom/InterviewModal';
+import { SnackbarContext } from '../App';
 
 export const InterviewSection = () => {
+  const showSnackbar = useContext(SnackbarContext);
+
   const [interviews, setInterviews] = useState([]);
   const token = useSelector((state) => state.auth.token);
   const [selectedInterview, setSelectedInterview] = useState(null);
@@ -32,10 +35,45 @@ export const InterviewSection = () => {
     setSelectedInterview(null);
   };
 
-  const handleSubmit = () => {
-    console.log('Submitted:', selectedInterview); // Debugging
-    handleCloseModal();
-  };
+
+  const handleSubmit = async (formData) => {
+    // Transform formData to match CompleteInterviewRequest structure
+    const transformedData = {
+        candidateId: formData.candidateId,
+        dsaRating: parseInt(formData.dsaRating, 10) || 0,
+        reactRating: parseInt(formData.reactRating, 10) || 0,
+        javascriptRating: parseInt(formData.javascriptRating, 10) || 0,
+        oopsRating: parseInt(formData.oopsRating, 10) || 0,
+        sqlRating: parseInt(formData.sqlRating, 10) || 0,
+        javaRating: parseInt(formData.javaRating, 10) || 0,
+        phpRating: parseInt(formData.phpRating, 10) || 0,
+        pythonRating: parseInt(formData.pythonRating, 10) || 0,
+        htmlRating: parseInt(formData.htmlRating, 10) || 0,
+        cssRating: parseInt(formData.cssRating, 10) || 0,
+        bootstrapRating: parseInt(formData.bootstrapRating, 10) || 0,
+        materialUiRating: parseInt(formData.materialUiRating, 10) || 0,
+        tailwindCssRating: parseInt(formData.tailwindCssRating, 10) || 0,
+        flutterRating: parseInt(formData.flutterRating, 10) || 0,
+        reactNativeRating: parseInt(formData.reactNativeRating, 10) || 0,
+        machineLearning: parseInt(formData.machineLearning, 10) || 0,
+        interviewId: formData.interviewId,
+        interviewStatus: formData.interviewStatus, // Assuming it's a string, update accordingly if it's an enum
+        feedback: formData.feedback
+    };
+
+    try {
+        await axios.post(ENDPOINTS.COMPLETE_INTERVIEW, transformedData, {
+            headers: {
+                Authorization: `Bearer ${token}`, // Ensure token is available here
+            },
+        });
+        showSnackbar('Interview completed successfully', 'success'); // Show success message
+        handleCloseModal(); // Close the modal
+    } catch (error) {
+        console.error('Error completing interview:', error);
+        showSnackbar('Error completing interview', 'error'); // Show error message
+    }
+};
 
   useEffect(() => {
     const fetchInterviews = async () => {
@@ -46,10 +84,14 @@ export const InterviewSection = () => {
           },
         });
         if (response.data && response.data.scheduleResponseDTO) {
+        showSnackbar('Candidates fetched successfully:', 'success');
+
           setInterviews(response.data.scheduleResponseDTO);
         }
       } catch (error) {
         console.error('Error fetching interviews:', error);
+        showSnackbar('Error fetching interviews:', 'error');
+
       }
     };
 

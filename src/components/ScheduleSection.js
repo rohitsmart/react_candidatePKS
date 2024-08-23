@@ -29,8 +29,6 @@ export const ScheduleSection = ({ onCandidateMatch }) => {
                     onCandidateMatch(candidate.candidateId);
                 }
             }
-
-
         } else {
             console.log("Candidate is not scheduled for an interview.");
         } setOpenModal(true);

@@ -17,6 +17,7 @@ import { clearInterviewData, setInterviewData } from '../../redux/slices/intervi
 
 const InterviewModal = ({ open, onClose, data, onSubmit }) => {
     const [formData, setFormData] = useState(data);
+
     const dispatch = useDispatch();
     const storedData = useSelector((state) => state.interview[data.interviewId]);
     useEffect(() => {
@@ -385,6 +386,7 @@ const InterviewModal = ({ open, onClose, data, onSubmit }) => {
                 <Button onClick={handleSubmit} color="primary">
                     Submit
                 </Button>
+    
             </DialogActions>
         </Dialog>
     );
