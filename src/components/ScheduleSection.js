@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { Grid, Container } from '@mui/material';
 import CustomCard from './custom/CustomCard';
-import CustomModal from './custom/CustomModal';  // Import the modal
+import CustomModal from './custom/CustomModal';
 import ENDPOINTS from '../assests/Endpoints';
 import { SnackbarContext } from '../App';
 import { CubicalLoader } from './custom/CubicalLoader';
@@ -29,7 +29,6 @@ export const ScheduleSection = () => {
 
     const handleScheduleSubmit = (formData) => {
         console.log("Scheduling for candidate:", formData);
-        // Implement the schedule submission logic here, such as sending the data to an API.
     };
 
     useEffect(() => {

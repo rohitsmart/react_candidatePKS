@@ -1,19 +1,52 @@
 import React from 'react';
-import { Modal, Box, Typography, TextField, Button, Grid } from '@mui/material';
+import { Modal, Box, Typography, TextField, Button, Grid, Autocomplete, CircularProgress } from '@mui/material';
+import axios from 'axios';
+import ENDPOINTS from '../../assests/Endpoints';
 
 const CustomModal = ({ open, handleClose, candidateData, handleSubmit }) => {
   const [formData, setFormData] = React.useState({
     candidateId: candidateData.candidateId,
     date: candidateData.scheduled ? candidateData.interviewDate.split(' ')[0] : '',
     time: candidateData.scheduled ? candidateData.interviewDate.split(' ')[1] : '',
-    employerName: candidateData.scheduled ? candidateData.referralEmployee : '',
+    employerName: candidateData.scheduled ? candidateData.interviewerName : '',
   });
+
+  const [employees, setEmployees] = React.useState([]);
+  const [searchQuery, setSearchQuery] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    if (searchQuery) {
+      fetchEmployees(searchQuery);
+    } else {
+      setEmployees([]);
+    }
+  }, [searchQuery]);
+
+  const fetchEmployees = async (query) => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`${ENDPOINTS.SEARCH_EMPLOYEES}?search=${query}`);
+      setEmployees(response.data.employeeData || []);
+    } catch (error) {
+      console.error("Error fetching employees:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
+    });
+  };
+
+  const handleEmployeeSelect = (event, newValue) => {
+    setFormData({
+      ...formData,
+      employerName: newValue ? newValue.fullName : '',
     });
   };
 
@@ -80,15 +113,51 @@ const CustomModal = ({ open, handleClose, candidateData, handleSubmit }) => {
             />
           </Grid>
         </Grid>
-        <TextField
-          label="Employer Name"
-          name="employerName"
-          value={formData.employerName}
-          disabled={candidateData.scheduled}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-        />
+
+        {candidateData.scheduled ? (
+          <TextField
+            label="Employer Name"
+            name="employerName"
+            value={formData.employerName}
+            disabled
+            fullWidth
+            margin="normal"
+          />
+        ) : (
+          <Autocomplete
+            freeSolo
+            options={employees}
+            getOptionLabel={(option) => `${option.empId} - ${option.fullName}`}
+            loading={loading}
+            onInputChange={(event, newValue) => {
+              setSearchQuery(newValue);
+            }}
+            onChange={handleEmployeeSelect}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Employer Name"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                InputProps={{
+                  ...params.InputProps,
+                  endAdornment: (
+                    <>
+                      {loading ? <CircularProgress color="inherit" size={24} /> : null}
+                      {params.InputProps.endAdornment}
+                    </>
+                  ),
+                }}
+              />
+            )}
+            renderOption={(props, option) => (
+              <li {...props}>
+                {`${option.empId} - ${option.fullName}`}
+              </li>
+            )}
+          />
+        )}
         <Button variant="contained" onClick={handleFormSubmit} fullWidth sx={{ mt: 2 }}>
           Save
         </Button>
