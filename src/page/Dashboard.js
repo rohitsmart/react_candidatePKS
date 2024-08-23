@@ -13,7 +13,6 @@ import EmployeeSection from '../components/EmployeeSection';
 import HomeSection from '../components/HomeSection';
 import CandidateSection from '../components/CandidateSection';
 import { ScheduleSection } from '../components/ScheduleSection';
-import { InterviewF2F } from '../components/InterviewF2F';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { clearToken } from '../redux/slices/authSlice';
