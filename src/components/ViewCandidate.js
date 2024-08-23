@@ -22,6 +22,18 @@ const statuses = [
     'REJECTED',
     'QUALIFIED_FOR_NEXT_ROUND'
 ];
+
+const statusStyles = {
+    APPLICATION_RECEIVED: { color: 'red', label: 'Not Scheduled', animation: 'pulse' },
+    INTERVIEW_SCHEDULED: { color: 'orange', label: 'Scheduled', animation: 'none' },
+    INTERVIEW_COMPLETED: { color: 'blue', label: 'Completed', animation: 'none' },
+    OFFER_EXTENDED: { color: 'green', label: 'Offer Extended', animation: 'none' },
+    OFFER_ACCEPTED: { color: 'purple', label: 'Offer Accepted', animation: 'none' },
+    OFFER_REJECTED: { color: 'darkred', label: 'Offer Rejected', animation: 'none' },
+    REJECTED: { color: 'gray', label: 'Rejected', animation: 'none' },
+    QUALIFIED_FOR_NEXT_ROUND: { color: 'teal', label: 'Qualified', animation: 'none' }
+};
+
 export const ViewCandidate = () => {
     const [candidates, setCandidates] = useState([]);
     const [totalCandidates, setTotalCandidates] = useState(0);
@@ -148,7 +160,7 @@ export const ViewCandidate = () => {
                                     ))}
                                 </TableRow>
                             </TableHead>
-                            <TableBody>
+                            {/* <TableBody>
                                 {candidates.map((candidate, index) => (
                                     <TableRow key={index}>
                                         <TableCell>{candidate.candidateId || 'N/A'}</TableCell>
@@ -170,7 +182,39 @@ export const ViewCandidate = () => {
                                         </TableCell>
                                     </TableRow>
                                 ))}
-                            </TableBody>
+                            </TableBody> */}
+                            <TableBody>
+    {candidates.map((candidate, index) => {
+        const status = candidate.status;
+        const statusStyle = statusStyles[status] || {};
+        return (
+            <TableRow key={index} sx={{ backgroundColor: statusStyle.color + '20', animation: statusStyle.animation }}>
+                <TableCell>{candidate.candidateId || 'N/A'}</TableCell>
+                <TableCell>{candidate.firstName}</TableCell>
+                <TableCell>{candidate.lastName}</TableCell>
+                <TableCell>{candidate.email}</TableCell>
+                <TableCell>{candidate.phone}</TableCell>
+                <TableCell>{candidate.applicationDate}</TableCell>
+                <TableCell>{candidate.candidateType}</TableCell>
+                <TableCell>{candidate.referralEmployee || 'N/A'}</TableCell>
+                <TableCell>
+                    <Typography sx={{ color: statusStyle.color }}>
+                        {statusStyle.label}
+                    </Typography>
+                </TableCell>
+                <TableCell>
+                    <IconButton aria-label="edit" onClick={() => handleEdit(candidate)} sx={{ color: 'primary.main' }}>
+                        <EditIcon />
+                    </IconButton>
+                    <IconButton aria-label="delete" onClick={() => handleDelete(candidate)} sx={{ color: 'error.main' }}>
+                        <DeleteIcon />
+                    </IconButton>
+                </TableCell>
+            </TableRow>
+        );
+    })}
+</TableBody>
+
                         </Table>
                     </TableContainer>
                     <TablePagination
