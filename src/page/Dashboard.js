@@ -19,6 +19,7 @@ import { useDispatch } from 'react-redux';
 import { clearToken } from '../redux/slices/authSlice';
 import { SnackbarContext } from '../App';
 import { useNavigate } from 'react-router-dom';
+import { InterviewSection } from '../components/InterviewSection';
 
 const drawerWidth = 240;
 
@@ -26,6 +27,7 @@ const Dashboard = (props) => {
     const dispatch = useDispatch();
     const showSnackbar = useContext(SnackbarContext);
     const navigate = useNavigate();
+    const [interviewScheduled,setInterviewScheduled]= useState(false);
 
     useEffect(() => {
         document.title = 'Dashboard';
@@ -49,6 +51,11 @@ const Dashboard = (props) => {
         } else {
             setSelectedSection(section);
         }
+    };
+
+    const handleCandidateMatch = (candidateId) => {
+        console.log("Matched Candidate ID:", candidateId);
+        setInterviewScheduled(true);
     };
 
     const handleLogout = () => {
@@ -169,10 +176,10 @@ const Dashboard = (props) => {
                 {selectedSection === 'Home' && <HomeSection />}
                 {selectedSection === 'Employee' && <EmployeeSection />}
                 {selectedSection === 'Candidate' && <CandidateSection />}
-                {selectedSection === 'Schedule' && <ScheduleSection />}
-
-
-    
+                {selectedSection === 'Schedule' && (
+                <ScheduleSection onCandidateMatch={handleCandidateMatch} />)}
+                 {selectedSection === 'Interview' && (
+                <InterviewSection />)}
             </Box>
         </Box>
     );

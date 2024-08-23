@@ -5,6 +5,7 @@ import ENDPOINTS from '../../assests/Endpoints';
 import { SnackbarContext } from '../../App';
 import LoadingButton from './LoadingButton';
 import moment from 'moment/moment';
+import { useSelector } from 'react-redux';
 
 const CustomModal = ({ open, handleClose, candidateData, handleSubmit }) => {
   const [formData, setFormData] = React.useState({
@@ -14,6 +15,10 @@ const CustomModal = ({ open, handleClose, candidateData, handleSubmit }) => {
     employerName: candidateData.scheduled ? candidateData.interviewerName : '',
   });
   const showSnackbar = useContext(SnackbarContext);
+
+  // const candidateInterviewerId = formData.employerName ? formData.employerName.split(' ')[0] : '';
+  const loginUserempId = useSelector((state) => state.auth.user.empId);
+  const token = useSelector((state) => state.auth.token);
 
   const [employees, setEmployees] = React.useState([]);
   const [employeeId, setEmployeeID] = useState("");
@@ -62,14 +67,14 @@ const CustomModal = ({ open, handleClose, candidateData, handleSubmit }) => {
 
   const handleFormSubmit = async () => {
     setLoading(true);
-  
+
     const formattedDate = moment(`${formData.date} ${formData.time}`, 'YYYY-MM-DD HH:mm').format('DD/MM/YYYY HH:mm');
-  
+
     const extractIdFromName = (name) => {
       const parts = name.split(' ');
       return parts[0];
     };
-  
+
     const requestData = {
       candidateId: formData.candidateId,
       interviewerId: employeeId || extractIdFromName(formData.employerName),
@@ -87,7 +92,7 @@ const CustomModal = ({ open, handleClose, candidateData, handleSubmit }) => {
       handleClose();
     }
   };
-  
+
 
   return (
     <Modal
@@ -193,7 +198,7 @@ const CustomModal = ({ open, handleClose, candidateData, handleSubmit }) => {
           />
         )}
 
-        <LoadingButton onClick={handleFormSubmit} variant="contained" isLoading={loading}  fullWidth sx={{ mt: 2 }}>
+        <LoadingButton onClick={handleFormSubmit} variant="contained" isLoading={loading} fullWidth sx={{ mt: 2 }}>
           Save
         </LoadingButton>
         <Button variant="contained" onClick={handleClose} fullWidth sx={{ mt: 2 }}>

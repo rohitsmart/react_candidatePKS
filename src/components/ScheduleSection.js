@@ -7,20 +7,35 @@ import CustomModal from './custom/CustomModal';
 import ENDPOINTS from '../assests/Endpoints';
 import { SnackbarContext } from '../App';
 import { CubicalLoader } from './custom/CubicalLoader';
+import { useNavigate } from 'react-router-dom';
 
-export const ScheduleSection = () => {
+export const ScheduleSection = ({ onCandidateMatch }) => {
     const [candidates, setCandidates] = useState([]);
     const [selectedCandidate, setSelectedCandidate] = useState(null);
     const [openModal, setOpenModal] = useState(false);
     const showSnackbar = useContext(SnackbarContext);
-    const token = useSelector((state) => state.auth.token);
     const [loading, setLoading] = useState(true);
-
+    const loginUserEmpId = useSelector((state) => state.auth.user.empId);
+    const token = useSelector((state) => state.auth.token);
     const handleScheduleClick = (candidate) => {
         setSelectedCandidate(candidate);
-        setOpenModal(true);
+        if (candidate.scheduled) {
+            console.log("Interviewer Name:", candidate.interviewerName);
+            const candidateInterviewerId = candidate.interviewerName ? candidate.interviewerName.split(' ')[0] : '';
+            console.log("Interviewer Id:", candidateInterviewerId);
+            if (candidateInterviewerId === loginUserEmpId) {
+                console.log("same id ")
+                if (onCandidateMatch) {
+                    onCandidateMatch(candidate.candidateId);
+                }
+            }
+
+
+        } else {
+            console.log("Candidate is not scheduled for an interview.");
+        } setOpenModal(true);
     };
-    
+
 
     const handleModalClose = () => {
         setOpenModal(false);
@@ -57,8 +72,8 @@ export const ScheduleSection = () => {
                 {candidates.length > 0 ? (
                     candidates.map((candidate) => (
                         <Grid item xs={12} sm={6} md={4} lg={3} key={candidate.candidateId}>
-                            <CustomCard 
-                                candidate={candidate} 
+                            <CustomCard
+                                candidate={candidate}
                                 handleScheduleClick={handleScheduleClick}
                             />
                         </Grid>
