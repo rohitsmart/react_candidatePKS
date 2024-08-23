@@ -160,29 +160,6 @@ export const ViewCandidate = () => {
                                     ))}
                                 </TableRow>
                             </TableHead>
-                            {/* <TableBody>
-                                {candidates.map((candidate, index) => (
-                                    <TableRow key={index}>
-                                        <TableCell>{candidate.candidateId || 'N/A'}</TableCell>
-                                        <TableCell>{candidate.firstName}</TableCell>
-                                        <TableCell>{candidate.lastName}</TableCell>
-                                        <TableCell>{candidate.email}</TableCell>
-                                        <TableCell>{candidate.phone}</TableCell>
-                                        <TableCell>{candidate.applicationDate}</TableCell>
-                                        <TableCell>{candidate.candidateType}</TableCell>
-                                        <TableCell>{candidate.referralEmployee || 'N/A'}</TableCell>
-                                        <TableCell>{candidate.status}</TableCell>
-                                        <TableCell>
-                                            <IconButton aria-label="edit" onClick={() => handleEdit(candidate)} sx={{ color: 'primary.main' }}>
-                                                <EditIcon />
-                                            </IconButton>
-                                            <IconButton aria-label="delete" onClick={() => handleDelete(candidate)} sx={{ color: 'error.main' }}>
-                                                <DeleteIcon />
-                                            </IconButton>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody> */}
                             <TableBody>
     {candidates.map((candidate, index) => {
         const status = candidate.status;
