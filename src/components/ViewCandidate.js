@@ -10,6 +10,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import ENDPOINTS from '../assests/Endpoints';
+import { useSelector } from 'react-redux';
 
 const statuses = [
     'APPLICATION_RECEIVED',
@@ -25,6 +26,7 @@ export const ViewCandidate = () => {
     const [candidates, setCandidates] = useState([]);
     const [totalCandidates, setTotalCandidates] = useState(0);
     const [loading, setLoading] = useState(false);
+    const token = useSelector((state) => state.auth.token);
 
     const [filters, setFilters] = useState({
         date: '',
@@ -47,8 +49,12 @@ export const ViewCandidate = () => {
             size: rowsPerPage
         };
         try {
-            const response = await axios.get(ENDPOINTS.FETCH_ALL_CANDIDATES, { params });
-            const data = response.data;
+            const response = await axios.get(ENDPOINTS.FETCH_ALL_CANDIDATES, {
+                params,
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });            const data = response.data;
             setCandidates(data.candidates);
             setTotalCandidates(data.totalCandidates);
         } catch (error) {

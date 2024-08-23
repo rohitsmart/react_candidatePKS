@@ -16,6 +16,8 @@ export const InterviewSection = () => {
   const [openModal, setOpenModal] = useState(false);
 
   const handleOpenModal = async (interview) => {
+    // const interviewData = interview.interviewStatus;
+    // if (interviewData === 'SCHEDULED') 
     try {
       const response = await axios.get(`${ENDPOINTS.FETCH_CANDIDATE_DATA}?candidateID=${interview.candidateId}`, {
         headers: {
@@ -37,7 +39,6 @@ export const InterviewSection = () => {
 
 
   const handleSubmit = async (formData) => {
-    // Transform formData to match CompleteInterviewRequest structure
     const transformedData = {
         candidateId: formData.candidateId,
         dsaRating: parseInt(formData.dsaRating, 10) || 0,
@@ -57,21 +58,21 @@ export const InterviewSection = () => {
         reactNativeRating: parseInt(formData.reactNativeRating, 10) || 0,
         machineLearning: parseInt(formData.machineLearning, 10) || 0,
         interviewId: formData.interviewId,
-        interviewStatus: formData.interviewStatus, // Assuming it's a string, update accordingly if it's an enum
+        interviewStatus: formData.interviewStatus,
         feedback: formData.feedback
     };
 
     try {
         await axios.post(ENDPOINTS.COMPLETE_INTERVIEW, transformedData, {
             headers: {
-                Authorization: `Bearer ${token}`, // Ensure token is available here
+                Authorization: `Bearer ${token}`,
             },
         });
-        showSnackbar('Interview completed successfully', 'success'); // Show success message
-        handleCloseModal(); // Close the modal
+        showSnackbar('Interview completed successfully', 'success');
+        handleCloseModal();
     } catch (error) {
         console.error('Error completing interview:', error);
-        showSnackbar('Error completing interview', 'error'); // Show error message
+        showSnackbar('Error completing interview', 'error');
     }
 };
 

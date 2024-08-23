@@ -11,6 +11,9 @@ import {
     Divider,
     Box,
     TextField,
+    InputLabel,
+    Select,
+    MenuItem,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearInterviewData, setInterviewData } from '../../redux/slices/interviewSlice';
@@ -328,14 +331,19 @@ const InterviewModal = ({ open, onClose, data, onSubmit }) => {
                                 disabled
 
                             />
-                            <TextField
+
+                            <InputLabel>Interview Status</InputLabel>
+                            <Select
                                 fullWidth
                                 margin="normal"
-                                label="Interview Status"
                                 name="interviewStatus"
                                 value={formData.interviewStatus || ''}
                                 onChange={handleChange}
-                            />
+                            >
+                                <MenuItem value="SCHEDULED">Scheduled</MenuItem>
+                                <MenuItem value="COMPLETED">Completed</MenuItem>
+                                <MenuItem value="CANCELED">Canceled</MenuItem>
+                            </Select>
 
                             <TextField
                                 fullWidth
@@ -386,7 +394,7 @@ const InterviewModal = ({ open, onClose, data, onSubmit }) => {
                 <Button onClick={handleSubmit} color="primary">
                     Submit
                 </Button>
-    
+
             </DialogActions>
         </Dialog>
     );
