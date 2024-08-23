@@ -4,10 +4,29 @@ import { useSelector } from 'react-redux';
 import { Grid, Typography } from '@mui/material';
 import ENDPOINTS from '../assests/Endpoints';
 import CustomInterviewCard from './custom/CustomInterviewCard';
+import InterviewModal from './custom/InterviewModal';
 
 export const InterviewSection = () => {
   const [interviews, setInterviews] = useState([]);
-  const token = useSelector((state) => state.auth.token); // Adjust according to your Redux setup
+  const token = useSelector((state) => state.auth.token);
+  const [selectedInterview, setSelectedInterview] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = (interview) => {
+    console.log("candidateId", interview.candidateId); // Debugging
+    setSelectedInterview(interview);
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setSelectedInterview(null);
+  };
+
+  const handleSubmit = () => {
+    console.log('Submitted:', selectedInterview); // Debugging
+    handleCloseModal();
+  };
 
   useEffect(() => {
     const fetchInterviews = async () => {
@@ -36,10 +55,21 @@ export const InterviewSection = () => {
       <Grid container spacing={3}>
         {interviews.map((interview) => (
           <Grid item xs={12} sm={6} md={3} key={interview.interviewId}>
-            <CustomInterviewCard interview={interview} />
+            <CustomInterviewCard
+              interview={interview}
+              onClick={handleOpenModal} // Ensure this is passed
+            />
           </Grid>
         ))}
       </Grid>
+      {selectedInterview && (
+        <InterviewModal
+          open={openModal}
+          onClose={handleCloseModal}
+          data={selectedInterview}
+          onSubmit={handleSubmit}
+        />
+      )}
     </>
   );
 };

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Card, CardContent, Typography, Grid, Chip } from '@mui/material';
+import { Card, CardContent, Typography, Chip } from '@mui/material';
 
-const CustomInterviewCard = ({ interview }) => {
-  const { interviewId, candidateName, candidateType, applicationDate, interviewDate, interviewStatus, employeeName } = interview;
+const CustomInterviewCard = ({ interview, onClick }) => {
+  const { interviewId, candidateId, candidateName, candidateType, applicationDate, interviewDate, interviewStatus, employeeName } = interview;
 
   const getStatusChipColor = (status) => {
     switch (status) {
@@ -18,10 +18,13 @@ const CustomInterviewCard = ({ interview }) => {
   };
 
   return (
-    <Card sx={{ boxShadow: 3, padding: 2 }}>
+    <Card sx={{ boxShadow: 3, padding: 2 }} onClick={() => onClick(interview)}>
       <CardContent>
         <Typography variant="h6" component="div">
           {candidateName} ({candidateType})
+        </Typography>
+        <Typography variant="h6" component="div">
+          Candidate Id: {candidateId}
         </Typography>
         <Typography color="textSecondary">
           Application Date: {applicationDate}
