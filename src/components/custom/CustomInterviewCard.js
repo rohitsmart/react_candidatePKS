@@ -18,31 +18,25 @@ const CustomInterviewCard = ({ interview }) => {
   };
 
   return (
-    <Card sx={{ marginBottom: 2, boxShadow: 3 }}>
+    <Card sx={{ boxShadow: 3, padding: 2 }}>
       <CardContent>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <Typography variant="h6" component="div">
-              {candidateName} ({candidateType})
-            </Typography>
-            <Typography color="textSecondary">
-              Application Date: {applicationDate}
-            </Typography>
-            <Typography color="textSecondary">
-              Interview Date: {interviewDate}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} md={6} container direction="column" alignItems="flex-end">
-            <Typography variant="body1">
-              Interviewer: {employeeName}
-            </Typography>
-            <Chip
-              label={interviewStatus}
-              color={getStatusChipColor(interviewStatus)}
-              sx={{ marginTop: 1, fontSize: '1rem', fontWeight: 'bold' }}
-            />
-          </Grid>
-        </Grid>
+        <Typography variant="h6" component="div">
+          {candidateName} ({candidateType})
+        </Typography>
+        <Typography color="textSecondary">
+          Application Date: {applicationDate}
+        </Typography>
+        <Typography color="textSecondary">
+          Interview Date: {interviewDate}
+        </Typography>
+        <Typography variant="body1">
+          Interviewer: {employeeName}
+        </Typography>
+        <Chip
+          label={interviewStatus}
+          color={getStatusChipColor(interviewStatus)}
+          sx={{ marginTop: 1, fontSize: '1rem', fontWeight: 'bold' }}
+        />
       </CardContent>
     </Card>
   );
