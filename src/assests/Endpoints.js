@@ -10,8 +10,10 @@ export const ENDPOINTS = {
     FETCH_ALL_CANDIDATES: `${BASE_URL}protected/candidate/fetchAllCandidates`,
     INTERVIEW_SCHEDULED: `${BASE_URL}protected/interview/schedule`,
     FECTH_ALL_INTERVIEW_SCHEDULED: `${BASE_URL}protected/interview/fetchAllSchedule`,
+    FETCH_CANDIDATE_DATA: `${BASE_URL}protected/interview/fetch-interview-for-candidate`,
 
-    // http://localhost:8080/api/protected/interview/fetchAllSchedule?page=0&size=50
+    // http://localhost:8080/api/protected/interview/fetch-interview-for-candidate?candidateID=CD0004
+
 
 };
 

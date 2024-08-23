@@ -12,10 +12,19 @@ export const InterviewSection = () => {
   const [selectedInterview, setSelectedInterview] = useState(null);
   const [openModal, setOpenModal] = useState(false);
 
-  const handleOpenModal = (interview) => {
-    console.log("candidateId", interview.candidateId); // Debugging
-    setSelectedInterview(interview);
-    setOpenModal(true);
+  const handleOpenModal = async (interview) => {
+    try {
+      const response = await axios.get(`${ENDPOINTS.FETCH_CANDIDATE_DATA}?candidateID=${interview.candidateId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      setSelectedInterview(response.data);
+      setOpenModal(true);
+    } catch (error) {
+      console.error('Error fetching candidate data:', error);
+    }
   };
 
   const handleCloseModal = () => {
@@ -57,7 +66,7 @@ export const InterviewSection = () => {
           <Grid item xs={12} sm={6} md={3} key={interview.interviewId}>
             <CustomInterviewCard
               interview={interview}
-              onClick={handleOpenModal} // Ensure this is passed
+              onClick={handleOpenModal}
             />
           </Grid>
         ))}
@@ -68,7 +77,7 @@ export const InterviewSection = () => {
           onClose={handleCloseModal}
           data={selectedInterview}
           onSubmit={handleSubmit}
-        />
+          />
       )}
     </>
   );
