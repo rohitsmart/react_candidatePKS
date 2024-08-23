@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Modal, Box, Typography, TextField, Button, Grid, Autocomplete, CircularProgress } from '@mui/material';
 import axios from 'axios';
 import ENDPOINTS from '../../assests/Endpoints';
+import { SnackbarContext } from '../../App';
+import LoadingButton from './LoadingButton';
+import moment from 'moment/moment';
 
 const CustomModal = ({ open, handleClose, candidateData, handleSubmit }) => {
   const [formData, setFormData] = React.useState({
@@ -10,6 +13,7 @@ const CustomModal = ({ open, handleClose, candidateData, handleSubmit }) => {
     time: candidateData.scheduled ? candidateData.interviewDate.split(' ')[1] : '',
     employerName: candidateData.scheduled ? candidateData.interviewerName : '',
   });
+  const showSnackbar = useContext(SnackbarContext);
 
   const [employees, setEmployees] = React.useState([]);
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -50,10 +54,30 @@ const CustomModal = ({ open, handleClose, candidateData, handleSubmit }) => {
     });
   };
 
-  const handleFormSubmit = () => {
-    handleSubmit(formData);
-    handleClose();
+  const handleFormSubmit = async () => {
+    setLoading(true);
+  
+    const formattedDate = moment(`${formData.date} ${formData.time}`, 'YYYY-MM-DD HH:mm').format('DD/MM/YYYY HH:mm');
+  
+    const requestData = {
+      candidateId: formData.candidateId,
+      interviewerId: formData.employerName.split(' - ')[0],
+      interviewDate: formattedDate,
+    };
+  
+    try {
+      const response = await axios.post(ENDPOINTS.INTERVIEW_SCHEDULED, requestData);
+      showSnackbar('Interview scheduled successfully:', 'success');
+      console.log('Interview scheduled successfully:', response.data);
+    } catch (error) {
+      console.error('Error scheduling interview:', error);
+      showSnackbar('Error scheduling interview:', 'error');
+    } finally {
+      setLoading(false);
+      handleClose();
+    }
   };
+  
 
   return (
     <Modal
@@ -158,9 +182,10 @@ const CustomModal = ({ open, handleClose, candidateData, handleSubmit }) => {
             )}
           />
         )}
-        <Button variant="contained" onClick={handleFormSubmit} fullWidth sx={{ mt: 2 }}>
+
+        <LoadingButton onClick={handleFormSubmit} variant="contained" isLoading={loading}  fullWidth sx={{ mt: 2 }}>
           Save
-        </Button>
+        </LoadingButton>
         <Button variant="contained" onClick={handleClose} fullWidth sx={{ mt: 2 }}>
           Cancel
         </Button>

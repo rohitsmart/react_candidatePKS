@@ -8,8 +8,7 @@ export const ENDPOINTS = {
     SEARCH_EMPLOYEES: `${BASE_URL}protected/management/emp-data`,
     SAVE_CANDIDATE: `${BASE_URL}protected/candidate/save`,
     FETCH_ALL_CANDIDATES: `${BASE_URL}protected/candidate/fetchAllCandidates`,
-
-
+    INTERVIEW_SCHEDULED: `${BASE_URL}protected/interview/schedule`,
 };
 
 export default ENDPOINTS;
