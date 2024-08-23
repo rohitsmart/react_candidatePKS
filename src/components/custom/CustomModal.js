@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Modal, Box, Typography, TextField, Button, Grid, Autocomplete, CircularProgress } from '@mui/material';
 import axios from 'axios';
 import ENDPOINTS from '../../assests/Endpoints';
@@ -16,6 +16,7 @@ const CustomModal = ({ open, handleClose, candidateData, handleSubmit }) => {
   const showSnackbar = useContext(SnackbarContext);
 
   const [employees, setEmployees] = React.useState([]);
+  const [employeeId, setEmployeeID] = useState("");
   const [searchQuery, setSearchQuery] = React.useState('');
   const [loading, setLoading] = React.useState(false);
 
@@ -31,7 +32,11 @@ const CustomModal = ({ open, handleClose, candidateData, handleSubmit }) => {
     setLoading(true);
     try {
       const response = await axios.get(`${ENDPOINTS.SEARCH_EMPLOYEES}?search=${query}`);
-      setEmployees(response.data.employeeData || []);
+      const employeeData = response.data.employeeData || [];
+      setEmployees(employeeData);
+      if (employeeData.length > 0) {
+        setEmployeeID(employeeData[0].empId);
+      }
     } catch (error) {
       console.error("Error fetching employees:", error);
     } finally {
@@ -52,6 +57,7 @@ const CustomModal = ({ open, handleClose, candidateData, handleSubmit }) => {
       ...formData,
       employerName: newValue ? newValue.fullName : '',
     });
+    setEmployeeID(newValue ? newValue.empId : '');
   };
 
   const handleFormSubmit = async () => {
@@ -59,12 +65,16 @@ const CustomModal = ({ open, handleClose, candidateData, handleSubmit }) => {
   
     const formattedDate = moment(`${formData.date} ${formData.time}`, 'YYYY-MM-DD HH:mm').format('DD/MM/YYYY HH:mm');
   
-    const requestData = {
-      candidateId: formData.candidateId,
-      interviewerId: formData.employerName.split(' - ')[0],
-      interviewDate: formattedDate,
+    const extractIdFromName = (name) => {
+      const parts = name.split(' ');
+      return parts[0];
     };
   
+    const requestData = {
+      candidateId: formData.candidateId,
+      interviewerId: employeeId || extractIdFromName(formData.employerName),
+      interviewDate: formattedDate,
+    };
     try {
       const response = await axios.post(ENDPOINTS.INTERVIEW_SCHEDULED, requestData);
       showSnackbar('Interview scheduled successfully:', 'success');
