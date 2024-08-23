@@ -12,12 +12,24 @@ import {
     Box,
     TextField,
 } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearInterviewData, setInterviewData } from '../../redux/slices/interviewSlice';
 
 const InterviewModal = ({ open, onClose, data, onSubmit }) => {
     const [formData, setFormData] = useState(data);
+    const dispatch = useDispatch();
+    const storedData = useSelector((state) => state.interview[data.interviewId]);
     useEffect(() => {
         setFormData(data);
     }, [data]);
+
+    useEffect(() => {
+        if (storedData) {
+            setFormData(storedData);
+        } else {
+            setFormData(data);
+        }
+    }, [data, storedData]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -25,10 +37,12 @@ const InterviewModal = ({ open, onClose, data, onSubmit }) => {
             ...prev,
             [name]: value,
         }));
+        dispatch(setInterviewData({ interviewId: formData.interviewId, data: { ...formData, [name]: value } }));
     };
 
     const handleSubmit = () => {
         onSubmit(formData);
+        dispatch(clearInterviewData({ interviewId: formData.interviewId }));
         onClose();
     };
 
@@ -37,7 +51,6 @@ const InterviewModal = ({ open, onClose, data, onSubmit }) => {
             <DialogTitle>Interview Details</DialogTitle>
             <DialogContent>
                 <Grid container spacing={2}>
-                    {/* Candidate Information */}
                     <Grid item xs={12} sm={6}>
                         <Paper elevation={2} sx={{ padding: 2 }}>
                             <Typography variant="h6" gutterBottom>
@@ -127,7 +140,6 @@ const InterviewModal = ({ open, onClose, data, onSubmit }) => {
                         </Paper>
                     </Grid>
 
-                    {/* Ratings & Skills */}
                     <Grid item xs={12} sm={6}>
                         <Paper elevation={2} sx={{ padding: 2 }}>
                             <Typography variant="h6" gutterBottom>
@@ -283,7 +295,6 @@ const InterviewModal = ({ open, onClose, data, onSubmit }) => {
                         </Paper>
                     </Grid>
 
-                    {/* Interview Information */}
                     <Grid item xs={12}>
                         <Paper elevation={2} sx={{ padding: 2 }}>
                             <Typography variant="h6" gutterBottom>
@@ -380,9 +391,3 @@ const InterviewModal = ({ open, onClose, data, onSubmit }) => {
 };
 
 export default InterviewModal;
-
-
-
-
-
-
