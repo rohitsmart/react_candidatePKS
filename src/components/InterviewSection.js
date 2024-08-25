@@ -9,22 +9,18 @@ import { SnackbarContext } from '../App';
 
 export const InterviewSection = () => {
   const showSnackbar = useContext(SnackbarContext);
-
   const [interviews, setInterviews] = useState([]);
   const token = useSelector((state) => state.auth.token);
   const [selectedInterview, setSelectedInterview] = useState(null);
   const [openModal, setOpenModal] = useState(false);
 
   const handleOpenModal = async (interview) => {
-    // const interviewData = interview.interviewStatus;
-    // if (interviewData === 'SCHEDULED') 
     try {
       const response = await axios.get(`${ENDPOINTS.FETCH_CANDIDATE_DATA}?candidateID=${interview.candidateId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-  
       setSelectedInterview(response.data);
       setOpenModal(true);
     } catch (error) {
